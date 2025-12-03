@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator nestgraphql {
+  provider              = "node node_modules/prisma-nestjs-graphql"
+  output                = "../src/---generated---"
+  emitSingle            = true
+  fields_Validator_from = "class-validator"
+  emitBlocks            = ["models", "enums", "inputs", "args"]
+  omitModelsCount       = true
+}
+
+enum Role {
+  ADMIN
+  USER
+  INFLUENCER
+}
+
+type Address {
+  street     String
+  city       String
+  state      String
+  postalCode String
+  country    String
+}
+
+model Influencer {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  username    String  @unique
+  email       String  @unique
+  password    String
+  role        Role    @default(INFLUENCER)
+  countryCode String
+  phoneNumber String
+  address     Address
+
+  stripeAccountId          String? @unique
+  stripeOnboardingComplete Boolean @default(false)
+  chargesEnabled           Boolean @default(false)
+  payoutsEnabled           Boolean @default(false)
+  detailsSubmitted         Boolean @default(false)
+  stripeAccountType        String?
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}

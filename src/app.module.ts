@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
 import { AppResolver } from './app.resolver';
+import { DbModule } from './db/db.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { AppResolver } from './app.resolver';
       subscription: true,
       introspection: true,
     }),
+    DbModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
