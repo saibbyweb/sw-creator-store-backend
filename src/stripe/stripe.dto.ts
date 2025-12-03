@@ -4,6 +4,15 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 export class CreateStripeConnectAccountInput {
   @Field(() => String)
   influencerId: string;
+
+  @Field(() => String)
+  country: string;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  username: string;
 }
 
 @InputType()

@@ -19,49 +19,35 @@ export class StripeService {
     this.logger = new Logger(StripeService.name);
     this.stripeSecretKey = process.env.STRIPE_SECRET_KEY!;
     if (!this.stripeSecretKey) {
-      throw new Error('Stripe is not configured');
+      throw new Error('Stripe is not configured!');
     }
     this.stripe = new Stripe(this.stripeSecretKey, {
       apiVersion: '2025-11-17.clover',
     });
-    this.frontendUrl = process.env.FRONTEND_URL!;
+    // this.frontendUrl = process.env.FRONTEND_URL!;
+    this.frontendUrl = 'https://saibbyweb.com';
   }
 
   async createStripeConnectAccount(input: CreateStripeConnectAccountInput) {
     try {
-      const influencer = await this.db.influencer.findUnique({
-        where: {
-          id: input.influencerId,
-        },
-      });
-
-      if (!influencer) {
-        throw new Error('Influencer not found');
-      }
-
       const stripeConnectAccount = await this.stripe.accounts.create({
         type: 'express',
-        country: influencer.address.country,
-        email: influencer.email,
+        country: input.country,
+        email: input.email,
         capabilities: {
           card_payments: { requested: true },
           transfers: { requested: true },
         },
         business_type: 'individual',
         business_profile: {
-          url: `https://${this.frontendUrl}/${influencer.username}`,
+          url: `https://${this.frontendUrl}/${input.username}`,
         },
       });
 
-      const updatedInfluencer = await this.db.influencer.update({
-        where: { id: influencer.id },
-        data: {
-          stripeAccountId: stripeConnectAccount.id,
-          stripeAccountType: 'express',
-        },
-      });
-
-      return updatedInfluencer;
+      return {
+        stripeAccountId: stripeConnectAccount.id,
+        stripeAccountType: stripeConnectAccount.type,
+      };
     } catch {
       this.logger.error('Failed to create Stripe connect account');
       throw new Error('Failed to create Stripe connect account');

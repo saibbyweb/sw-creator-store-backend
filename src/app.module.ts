@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
 import { AppResolver } from './app.resolver';
 import { DbModule } from './db/db.module';
+import { InfluencerModule } from './influencer/influencer.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { DbModule } from './db/db.module';
       introspection: true,
     }),
     DbModule,
+    InfluencerModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

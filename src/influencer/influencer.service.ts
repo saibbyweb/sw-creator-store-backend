@@ -20,34 +20,32 @@ export class InfluencerService {
 
   async createInfluencer(input: CreateInfluencerInput): Promise<Influencer> {
     try {
-      const influencerCreateTransaction = await this.db.$transaction(
-        async (tx) => {
-          const hashedPassword = await bcrypt.hash(input.password, 10);
+      const hashedPassword = await bcrypt.hash(input.password, 10);
 
-          const influencer = await tx.influencer.create({
-            data: {
-              ...input,
-              password: hashedPassword,
-            },
-          });
-
-          const stripeConnectAccount =
-            await this.stripeService.createStripeConnectAccount({
-              influencerId: influencer.id,
-            });
-
-          const updatedInfluencer = await tx.influencer.update({
-            where: { id: influencer.id },
-            data: {
-              stripeAccountId: stripeConnectAccount.stripeAccountId,
-            },
-          });
-
-          return updatedInfluencer;
+      const influencer = await this.db.influencer.create({
+        data: {
+          ...input,
+          password: hashedPassword,
         },
-      );
+      });
 
-      return influencerCreateTransaction;
+      const { stripeAccountId, stripeAccountType } =
+        await this.stripeService.createStripeConnectAccount({
+          influencerId: influencer.id,
+          country: influencer.countryCode,
+          email: influencer.email,
+          username: influencer.username,
+        });
+
+      const updatedInfluencer = await this.db.influencer.update({
+        where: { id: influencer.id },
+        data: {
+          stripeAccountId: stripeAccountId,
+          stripeAccountType: stripeAccountType,
+        },
+      });
+
+      return updatedInfluencer;
     } catch (error) {
       this.logger.error('Failed to create influencer');
       throw new Error('Failed to create influencer');
