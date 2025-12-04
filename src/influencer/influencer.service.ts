@@ -14,6 +14,26 @@ export class InfluencerService {
     this.logger = new Logger(InfluencerService.name);
   }
 
+  async loggedInInfluencer(influencerId: string): Promise<Influencer> {
+    try {
+      const influencer = await this.db.influencer.findUnique({
+        where: { id: influencerId },
+        include: {
+          stores: false,
+        },
+      });
+
+      if (!influencer) {
+        throw new Error('Influencer Not Found');
+      }
+
+      return influencer;
+    } catch {
+      this.logger.error('Failed to get influencer');
+      throw new Error('Failed to get influencer');
+    }
+  }
+
   async createInfluencer(input: CreateInfluencerInput): Promise<Influencer> {
     try {
       const hashedPassword = await bcrypt.hash(input.password, 10);

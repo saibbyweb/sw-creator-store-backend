@@ -60,6 +60,19 @@ type SocialLink {
   url      String
 }
 
+model Session {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  influencerId String?     @db.ObjectId
+  influencer   Influencer? @relation(fields: [influencerId], references: [id])
+  token        String      @unique
+  valid        Boolean     @default(true)
+  expiresAt    DateTime?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([influencerId])
+}
+
 model Influencer {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
@@ -87,8 +100,9 @@ model Influencer {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  stores Store[]
-  media  Media[]
+  stores   Store[]
+  media    Media[]
+  sessions Session[]
 }
 
 enum ProductStyle {
@@ -110,6 +124,7 @@ model Product {
   style      ProductStyle
   type       ProductType
   url        String
+  position   Int
   mediaId    String?      @db.ObjectId
   media      Media?       @relation(fields: [mediaId], references: [id])
   title      String?

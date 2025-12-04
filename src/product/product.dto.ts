@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 import { ProductStyle, ProductType } from 'src/---generated---';
 
 @InputType()
@@ -14,6 +14,9 @@ export class CreateProductInput {
 
   @Field(() => String)
   url: string;
+
+  @Field(() => Int)
+  position: number;
 
   @Field(() => String)
   mediaId?: string;
@@ -41,6 +44,9 @@ export class UpdateProductInput {
 
   @Field(() => String, { nullable: true })
   url?: string;
+
+  @Field(() => Int, { nullable: true })
+  position?: number;
 
   @Field(() => String, { nullable: true })
   mediaId?: string;

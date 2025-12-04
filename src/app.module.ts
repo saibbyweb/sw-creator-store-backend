@@ -8,6 +8,8 @@ import { DbModule } from './db/db.module';
 import { InfluencerModule } from './influencer/influencer.module';
 import { StoreModule } from './store/store.module';
 import { ProductModule } from './product/product.module';
+import { CoreAuthModule } from './auth/core-auth.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { ProductModule } from './product/product.module';
       introspection: true,
     }),
     DbModule,
+    CoreAuthModule,
+    AuthModule,
     InfluencerModule,
     StoreModule,
     ProductModule,

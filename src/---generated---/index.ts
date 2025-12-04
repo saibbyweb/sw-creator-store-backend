@@ -8,6 +8,7 @@ import { Prisma } from '@prisma/client';
 import { registerEnumType } from '@nestjs/graphql';
 import { ID } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-type-json';
+import { Float } from '@nestjs/graphql';
 
 export enum StoreScalarFieldEnum {
     id = "id",
@@ -23,11 +24,22 @@ export enum StoreScalarFieldEnum {
     updatedAt = "updatedAt"
 }
 
+export enum SessionScalarFieldEnum {
+    id = "id",
+    influencerId = "influencerId",
+    token = "token",
+    valid = "valid",
+    expiresAt = "expiresAt",
+    createdAt = "createdAt",
+    updatedAt = "updatedAt"
+}
+
 export enum ProductScalarFieldEnum {
     id = "id",
     style = "style",
     type = "type",
     url = "url",
+    position = "position",
     mediaId = "mediaId",
     title = "title",
     subTitle = "subTitle",
@@ -147,6 +159,7 @@ registerEnumType(SocialPlatform, { name: 'SocialPlatform', description: undefine
 registerEnumType(SortOrder, { name: 'SortOrder', description: undefined })
 registerEnumType(StoreDesign, { name: 'StoreDesign', description: undefined })
 registerEnumType(ProductScalarFieldEnum, { name: 'ProductScalarFieldEnum', description: undefined })
+registerEnumType(SessionScalarFieldEnum, { name: 'SessionScalarFieldEnum', description: undefined })
 registerEnumType(StoreScalarFieldEnum, { name: 'StoreScalarFieldEnum', description: undefined })
 
 @InputType()
@@ -458,6 +471,19 @@ export class InfluencerCreateNestedOneWithoutMediaInput {
 }
 
 @InputType()
+export class InfluencerCreateNestedOneWithoutSessionsInput {
+    @Field(() => InfluencerCreateWithoutSessionsInput, {nullable:true})
+    @Type(() => InfluencerCreateWithoutSessionsInput)
+    create?: InstanceType<typeof InfluencerCreateWithoutSessionsInput>;
+    @Field(() => InfluencerCreateOrConnectWithoutSessionsInput, {nullable:true})
+    @Type(() => InfluencerCreateOrConnectWithoutSessionsInput)
+    connectOrCreate?: InstanceType<typeof InfluencerCreateOrConnectWithoutSessionsInput>;
+    @Field(() => InfluencerWhereUniqueInput, {nullable:true})
+    @Type(() => InfluencerWhereUniqueInput)
+    connect?: Prisma.AtLeast<InfluencerWhereUniqueInput, 'id' | 'username' | 'email' | 'stripeAccountId'>;
+}
+
+@InputType()
 export class InfluencerCreateNestedOneWithoutStoresInput {
     @Field(() => InfluencerCreateWithoutStoresInput, {nullable:true})
     @Type(() => InfluencerCreateWithoutStoresInput)
@@ -478,6 +504,16 @@ export class InfluencerCreateOrConnectWithoutMediaInput {
     @Field(() => InfluencerCreateWithoutMediaInput, {nullable:false})
     @Type(() => InfluencerCreateWithoutMediaInput)
     create!: InstanceType<typeof InfluencerCreateWithoutMediaInput>;
+}
+
+@InputType()
+export class InfluencerCreateOrConnectWithoutSessionsInput {
+    @Field(() => InfluencerWhereUniqueInput, {nullable:false})
+    @Type(() => InfluencerWhereUniqueInput)
+    where!: Prisma.AtLeast<InfluencerWhereUniqueInput, 'id' | 'username' | 'email' | 'stripeAccountId'>;
+    @Field(() => InfluencerCreateWithoutSessionsInput, {nullable:false})
+    @Type(() => InfluencerCreateWithoutSessionsInput)
+    create!: InstanceType<typeof InfluencerCreateWithoutSessionsInput>;
 }
 
 @InputType()
@@ -538,6 +574,60 @@ export class InfluencerCreateWithoutMediaInput {
     updatedAt?: Date | string;
     @Field(() => StoreCreateNestedManyWithoutInfluencerInput, {nullable:true})
     stores?: InstanceType<typeof StoreCreateNestedManyWithoutInfluencerInput>;
+    @Field(() => SessionCreateNestedManyWithoutInfluencerInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionCreateNestedManyWithoutInfluencerInput>;
+}
+
+@InputType()
+export class InfluencerCreateWithoutSessionsInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    name!: string;
+    @Field(() => String, {nullable:false})
+    username!: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Role, {nullable:true})
+    role?: `${Role}`;
+    @Field(() => String, {nullable:false})
+    countryCode!: string;
+    @Field(() => String, {nullable:false})
+    phoneNumber!: string;
+    @Field(() => AddressCreateEnvelopeInput, {nullable:false})
+    address!: InstanceType<typeof AddressCreateEnvelopeInput>;
+    @Field(() => [SocialLinkCreateInput], {nullable:true})
+    socialLinks?: Array<SocialLinkCreateInput>;
+    @Field(() => Boolean, {nullable:true})
+    stripeOnboardingComplete?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    chargesEnabled?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    payoutsEnabled?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    detailsSubmitted?: boolean;
+    @Field(() => String, {nullable:true})
+    stripeAccountId?: string;
+    @Field(() => String, {nullable:true})
+    stripeAccountType?: string;
+    @Field(() => String, {nullable:true})
+    displayName?: string;
+    @Field(() => String, {nullable:true})
+    bio?: string;
+    @Field(() => String, {nullable:true})
+    profilePicture?: string;
+    @Field(() => Date, {nullable:true})
+    deletedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => StoreCreateNestedManyWithoutInfluencerInput, {nullable:true})
+    stores?: InstanceType<typeof StoreCreateNestedManyWithoutInfluencerInput>;
+    @Field(() => MediaCreateNestedManyWithoutInfluencerInput, {nullable:true})
+    media?: InstanceType<typeof MediaCreateNestedManyWithoutInfluencerInput>;
 }
 
 @InputType()
@@ -588,6 +678,8 @@ export class InfluencerCreateWithoutStoresInput {
     updatedAt?: Date | string;
     @Field(() => MediaCreateNestedManyWithoutInfluencerInput, {nullable:true})
     media?: InstanceType<typeof MediaCreateNestedManyWithoutInfluencerInput>;
+    @Field(() => SessionCreateNestedManyWithoutInfluencerInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionCreateNestedManyWithoutInfluencerInput>;
 }
 
 @InputType()
@@ -640,6 +732,8 @@ export class InfluencerCreateInput {
     stores?: InstanceType<typeof StoreCreateNestedManyWithoutInfluencerInput>;
     @Field(() => MediaCreateNestedManyWithoutInfluencerInput, {nullable:true})
     media?: InstanceType<typeof MediaCreateNestedManyWithoutInfluencerInput>;
+    @Field(() => SessionCreateNestedManyWithoutInfluencerInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionCreateNestedManyWithoutInfluencerInput>;
 }
 
 @ArgsType()
@@ -748,6 +842,14 @@ export class InfluencerMinOrderByAggregateInput {
 }
 
 @InputType()
+export class InfluencerNullableScalarRelationFilter {
+    @Field(() => InfluencerWhereInput, {nullable:true})
+    is?: InstanceType<typeof InfluencerWhereInput>;
+    @Field(() => InfluencerWhereInput, {nullable:true})
+    isNot?: InstanceType<typeof InfluencerWhereInput>;
+}
+
+@InputType()
 export class InfluencerOrderByWithAggregationInput {
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
@@ -847,6 +949,8 @@ export class InfluencerOrderByWithRelationInput {
     stores?: InstanceType<typeof StoreOrderByRelationAggregateInput>;
     @Field(() => MediaOrderByRelationAggregateInput, {nullable:true})
     media?: InstanceType<typeof MediaOrderByRelationAggregateInput>;
+    @Field(() => SessionOrderByRelationAggregateInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionOrderByRelationAggregateInput>;
 }
 
 @InputType()
@@ -955,6 +1059,60 @@ export class InfluencerUncheckedCreateWithoutMediaInput {
     updatedAt?: Date | string;
     @Field(() => StoreUncheckedCreateNestedManyWithoutInfluencerInput, {nullable:true})
     stores?: InstanceType<typeof StoreUncheckedCreateNestedManyWithoutInfluencerInput>;
+    @Field(() => SessionUncheckedCreateNestedManyWithoutInfluencerInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionUncheckedCreateNestedManyWithoutInfluencerInput>;
+}
+
+@InputType()
+export class InfluencerUncheckedCreateWithoutSessionsInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    name!: string;
+    @Field(() => String, {nullable:false})
+    username!: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @Field(() => Role, {nullable:true})
+    role?: `${Role}`;
+    @Field(() => String, {nullable:false})
+    countryCode!: string;
+    @Field(() => String, {nullable:false})
+    phoneNumber!: string;
+    @Field(() => AddressCreateEnvelopeInput, {nullable:false})
+    address!: InstanceType<typeof AddressCreateEnvelopeInput>;
+    @Field(() => [SocialLinkCreateInput], {nullable:true})
+    socialLinks?: Array<SocialLinkCreateInput>;
+    @Field(() => Boolean, {nullable:true})
+    stripeOnboardingComplete?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    chargesEnabled?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    payoutsEnabled?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    detailsSubmitted?: boolean;
+    @Field(() => String, {nullable:true})
+    stripeAccountId?: string;
+    @Field(() => String, {nullable:true})
+    stripeAccountType?: string;
+    @Field(() => String, {nullable:true})
+    displayName?: string;
+    @Field(() => String, {nullable:true})
+    bio?: string;
+    @Field(() => String, {nullable:true})
+    profilePicture?: string;
+    @Field(() => Date, {nullable:true})
+    deletedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => StoreUncheckedCreateNestedManyWithoutInfluencerInput, {nullable:true})
+    stores?: InstanceType<typeof StoreUncheckedCreateNestedManyWithoutInfluencerInput>;
+    @Field(() => MediaUncheckedCreateNestedManyWithoutInfluencerInput, {nullable:true})
+    media?: InstanceType<typeof MediaUncheckedCreateNestedManyWithoutInfluencerInput>;
 }
 
 @InputType()
@@ -1005,6 +1163,8 @@ export class InfluencerUncheckedCreateWithoutStoresInput {
     updatedAt?: Date | string;
     @Field(() => MediaUncheckedCreateNestedManyWithoutInfluencerInput, {nullable:true})
     media?: InstanceType<typeof MediaUncheckedCreateNestedManyWithoutInfluencerInput>;
+    @Field(() => SessionUncheckedCreateNestedManyWithoutInfluencerInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionUncheckedCreateNestedManyWithoutInfluencerInput>;
 }
 
 @InputType()
@@ -1057,6 +1217,8 @@ export class InfluencerUncheckedCreateInput {
     stores?: InstanceType<typeof StoreUncheckedCreateNestedManyWithoutInfluencerInput>;
     @Field(() => MediaUncheckedCreateNestedManyWithoutInfluencerInput, {nullable:true})
     media?: InstanceType<typeof MediaUncheckedCreateNestedManyWithoutInfluencerInput>;
+    @Field(() => SessionUncheckedCreateNestedManyWithoutInfluencerInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionUncheckedCreateNestedManyWithoutInfluencerInput>;
 }
 
 @InputType()
@@ -1151,6 +1313,58 @@ export class InfluencerUncheckedUpdateWithoutMediaInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => StoreUncheckedUpdateManyWithoutInfluencerNestedInput, {nullable:true})
     stores?: InstanceType<typeof StoreUncheckedUpdateManyWithoutInfluencerNestedInput>;
+    @Field(() => SessionUncheckedUpdateManyWithoutInfluencerNestedInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionUncheckedUpdateManyWithoutInfluencerNestedInput>;
+}
+
+@InputType()
+export class InfluencerUncheckedUpdateWithoutSessionsInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumRoleFieldUpdateOperationsInput, {nullable:true})
+    role?: InstanceType<typeof EnumRoleFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    countryCode?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    phoneNumber?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => AddressUpdateEnvelopeInput, {nullable:true})
+    address?: InstanceType<typeof AddressUpdateEnvelopeInput>;
+    @Field(() => [SocialLinkCreateInput], {nullable:true})
+    socialLinks?: Array<SocialLinkCreateInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    stripeOnboardingComplete?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    chargesEnabled?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    payoutsEnabled?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    detailsSubmitted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    stripeAccountId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    stripeAccountType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    bio?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    profilePicture?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => StoreUncheckedUpdateManyWithoutInfluencerNestedInput, {nullable:true})
+    stores?: InstanceType<typeof StoreUncheckedUpdateManyWithoutInfluencerNestedInput>;
+    @Field(() => MediaUncheckedUpdateManyWithoutInfluencerNestedInput, {nullable:true})
+    media?: InstanceType<typeof MediaUncheckedUpdateManyWithoutInfluencerNestedInput>;
 }
 
 @InputType()
@@ -1199,6 +1413,8 @@ export class InfluencerUncheckedUpdateWithoutStoresInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => MediaUncheckedUpdateManyWithoutInfluencerNestedInput, {nullable:true})
     media?: InstanceType<typeof MediaUncheckedUpdateManyWithoutInfluencerNestedInput>;
+    @Field(() => SessionUncheckedUpdateManyWithoutInfluencerNestedInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionUncheckedUpdateManyWithoutInfluencerNestedInput>;
 }
 
 @InputType()
@@ -1249,6 +1465,8 @@ export class InfluencerUncheckedUpdateInput {
     stores?: InstanceType<typeof StoreUncheckedUpdateManyWithoutInfluencerNestedInput>;
     @Field(() => MediaUncheckedUpdateManyWithoutInfluencerNestedInput, {nullable:true})
     media?: InstanceType<typeof MediaUncheckedUpdateManyWithoutInfluencerNestedInput>;
+    @Field(() => SessionUncheckedUpdateManyWithoutInfluencerNestedInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionUncheckedUpdateManyWithoutInfluencerNestedInput>;
 }
 
 @InputType()
@@ -1336,6 +1554,30 @@ export class InfluencerUpdateOneRequiredWithoutStoresNestedInput {
 }
 
 @InputType()
+export class InfluencerUpdateOneWithoutSessionsNestedInput {
+    @Field(() => InfluencerCreateWithoutSessionsInput, {nullable:true})
+    @Type(() => InfluencerCreateWithoutSessionsInput)
+    create?: InstanceType<typeof InfluencerCreateWithoutSessionsInput>;
+    @Field(() => InfluencerCreateOrConnectWithoutSessionsInput, {nullable:true})
+    @Type(() => InfluencerCreateOrConnectWithoutSessionsInput)
+    connectOrCreate?: InstanceType<typeof InfluencerCreateOrConnectWithoutSessionsInput>;
+    @Field(() => InfluencerUpsertWithoutSessionsInput, {nullable:true})
+    @Type(() => InfluencerUpsertWithoutSessionsInput)
+    upsert?: InstanceType<typeof InfluencerUpsertWithoutSessionsInput>;
+    @Field(() => Boolean, {nullable:true})
+    disconnect?: boolean;
+    @Field(() => InfluencerWhereInput, {nullable:true})
+    @Type(() => InfluencerWhereInput)
+    delete?: InstanceType<typeof InfluencerWhereInput>;
+    @Field(() => InfluencerWhereUniqueInput, {nullable:true})
+    @Type(() => InfluencerWhereUniqueInput)
+    connect?: Prisma.AtLeast<InfluencerWhereUniqueInput, 'id' | 'username' | 'email' | 'stripeAccountId'>;
+    @Field(() => InfluencerUpdateToOneWithWhereWithoutSessionsInput, {nullable:true})
+    @Type(() => InfluencerUpdateToOneWithWhereWithoutSessionsInput)
+    update?: InstanceType<typeof InfluencerUpdateToOneWithWhereWithoutSessionsInput>;
+}
+
+@InputType()
 export class InfluencerUpdateToOneWithWhereWithoutMediaInput {
     @Field(() => InfluencerWhereInput, {nullable:true})
     @Type(() => InfluencerWhereInput)
@@ -1343,6 +1585,16 @@ export class InfluencerUpdateToOneWithWhereWithoutMediaInput {
     @Field(() => InfluencerUpdateWithoutMediaInput, {nullable:false})
     @Type(() => InfluencerUpdateWithoutMediaInput)
     data!: InstanceType<typeof InfluencerUpdateWithoutMediaInput>;
+}
+
+@InputType()
+export class InfluencerUpdateToOneWithWhereWithoutSessionsInput {
+    @Field(() => InfluencerWhereInput, {nullable:true})
+    @Type(() => InfluencerWhereInput)
+    where?: InstanceType<typeof InfluencerWhereInput>;
+    @Field(() => InfluencerUpdateWithoutSessionsInput, {nullable:false})
+    @Type(() => InfluencerUpdateWithoutSessionsInput)
+    data!: InstanceType<typeof InfluencerUpdateWithoutSessionsInput>;
 }
 
 @InputType()
@@ -1401,6 +1653,58 @@ export class InfluencerUpdateWithoutMediaInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => StoreUpdateManyWithoutInfluencerNestedInput, {nullable:true})
     stores?: InstanceType<typeof StoreUpdateManyWithoutInfluencerNestedInput>;
+    @Field(() => SessionUpdateManyWithoutInfluencerNestedInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionUpdateManyWithoutInfluencerNestedInput>;
+}
+
+@InputType()
+export class InfluencerUpdateWithoutSessionsInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    username?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumRoleFieldUpdateOperationsInput, {nullable:true})
+    role?: InstanceType<typeof EnumRoleFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    countryCode?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    phoneNumber?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => AddressUpdateEnvelopeInput, {nullable:true})
+    address?: InstanceType<typeof AddressUpdateEnvelopeInput>;
+    @Field(() => [SocialLinkCreateInput], {nullable:true})
+    socialLinks?: Array<SocialLinkCreateInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    stripeOnboardingComplete?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    chargesEnabled?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    payoutsEnabled?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    detailsSubmitted?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    stripeAccountId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    stripeAccountType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    bio?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    profilePicture?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => StoreUpdateManyWithoutInfluencerNestedInput, {nullable:true})
+    stores?: InstanceType<typeof StoreUpdateManyWithoutInfluencerNestedInput>;
+    @Field(() => MediaUpdateManyWithoutInfluencerNestedInput, {nullable:true})
+    media?: InstanceType<typeof MediaUpdateManyWithoutInfluencerNestedInput>;
 }
 
 @InputType()
@@ -1449,6 +1753,8 @@ export class InfluencerUpdateWithoutStoresInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => MediaUpdateManyWithoutInfluencerNestedInput, {nullable:true})
     media?: InstanceType<typeof MediaUpdateManyWithoutInfluencerNestedInput>;
+    @Field(() => SessionUpdateManyWithoutInfluencerNestedInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionUpdateManyWithoutInfluencerNestedInput>;
 }
 
 @InputType()
@@ -1499,6 +1805,8 @@ export class InfluencerUpdateInput {
     stores?: InstanceType<typeof StoreUpdateManyWithoutInfluencerNestedInput>;
     @Field(() => MediaUpdateManyWithoutInfluencerNestedInput, {nullable:true})
     media?: InstanceType<typeof MediaUpdateManyWithoutInfluencerNestedInput>;
+    @Field(() => SessionUpdateManyWithoutInfluencerNestedInput, {nullable:true})
+    sessions?: InstanceType<typeof SessionUpdateManyWithoutInfluencerNestedInput>;
 }
 
 @InputType()
@@ -1509,6 +1817,19 @@ export class InfluencerUpsertWithoutMediaInput {
     @Field(() => InfluencerCreateWithoutMediaInput, {nullable:false})
     @Type(() => InfluencerCreateWithoutMediaInput)
     create!: InstanceType<typeof InfluencerCreateWithoutMediaInput>;
+    @Field(() => InfluencerWhereInput, {nullable:true})
+    @Type(() => InfluencerWhereInput)
+    where?: InstanceType<typeof InfluencerWhereInput>;
+}
+
+@InputType()
+export class InfluencerUpsertWithoutSessionsInput {
+    @Field(() => InfluencerUpdateWithoutSessionsInput, {nullable:false})
+    @Type(() => InfluencerUpdateWithoutSessionsInput)
+    update!: InstanceType<typeof InfluencerUpdateWithoutSessionsInput>;
+    @Field(() => InfluencerCreateWithoutSessionsInput, {nullable:false})
+    @Type(() => InfluencerCreateWithoutSessionsInput)
+    create!: InstanceType<typeof InfluencerCreateWithoutSessionsInput>;
     @Field(() => InfluencerWhereInput, {nullable:true})
     @Type(() => InfluencerWhereInput)
     where?: InstanceType<typeof InfluencerWhereInput>;
@@ -1583,6 +1904,8 @@ export class InfluencerWhereUniqueInput {
     stores?: InstanceType<typeof StoreListRelationFilter>;
     @Field(() => MediaListRelationFilter, {nullable:true})
     media?: InstanceType<typeof MediaListRelationFilter>;
+    @Field(() => SessionListRelationFilter, {nullable:true})
+    sessions?: InstanceType<typeof SessionListRelationFilter>;
 }
 
 @InputType()
@@ -1641,6 +1964,8 @@ export class InfluencerWhereInput {
     stores?: InstanceType<typeof StoreListRelationFilter>;
     @Field(() => MediaListRelationFilter, {nullable:true})
     media?: InstanceType<typeof MediaListRelationFilter>;
+    @Field(() => SessionListRelationFilter, {nullable:true})
+    sessions?: InstanceType<typeof SessionListRelationFilter>;
 }
 
 @ObjectType()
@@ -1693,6 +2018,8 @@ export class Influencer {
     stores?: Array<Store>;
     @Field(() => [Media], {nullable:true})
     media?: Array<Media>;
+    @Field(() => [Session], {nullable:true})
+    sessions?: Array<Session>;
 }
 
 @ArgsType()
@@ -2707,6 +3034,14 @@ export class AggregateProductRawArgs {
 }
 
 @ArgsType()
+export class AggregateSessionRawArgs {
+    @Field(() => [GraphQLJSON], {nullable:true})
+    pipeline?: Array<any>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    options?: any;
+}
+
+@ArgsType()
 export class AggregateStoreRawArgs {
     @Field(() => [GraphQLJSON], {nullable:true})
     pipeline?: Array<any>;
@@ -3103,11 +3438,83 @@ export class FindProductRawArgs {
 }
 
 @ArgsType()
+export class FindSessionRawArgs {
+    @Field(() => GraphQLJSON, {nullable:true})
+    filter?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    options?: any;
+}
+
+@ArgsType()
 export class FindStoreRawArgs {
     @Field(() => GraphQLJSON, {nullable:true})
     filter?: any;
     @Field(() => GraphQLJSON, {nullable:true})
     options?: any;
+}
+
+@InputType()
+export class IntFieldUpdateOperationsInput {
+    @Field(() => Int, {nullable:true})
+    set?: number;
+    @Field(() => Int, {nullable:true})
+    increment?: number;
+    @Field(() => Int, {nullable:true})
+    decrement?: number;
+    @Field(() => Int, {nullable:true})
+    multiply?: number;
+    @Field(() => Int, {nullable:true})
+    divide?: number;
+}
+
+@InputType()
+export class IntFilter {
+    @Field(() => Int, {nullable:true})
+    equals?: number;
+    @Field(() => [Int], {nullable:true})
+    in?: Array<number>;
+    @Field(() => [Int], {nullable:true})
+    notIn?: Array<number>;
+    @Field(() => Int, {nullable:true})
+    lt?: number;
+    @Field(() => Int, {nullable:true})
+    lte?: number;
+    @Field(() => Int, {nullable:true})
+    gt?: number;
+    @Field(() => Int, {nullable:true})
+    gte?: number;
+    @Field(() => NestedIntFilter, {nullable:true})
+    not?: InstanceType<typeof NestedIntFilter>;
+}
+
+@InputType()
+export class IntWithAggregatesFilter {
+    @Field(() => Int, {nullable:true})
+    equals?: number;
+    @Field(() => [Int], {nullable:true})
+    in?: Array<number>;
+    @Field(() => [Int], {nullable:true})
+    notIn?: Array<number>;
+    @Field(() => Int, {nullable:true})
+    lt?: number;
+    @Field(() => Int, {nullable:true})
+    lte?: number;
+    @Field(() => Int, {nullable:true})
+    gt?: number;
+    @Field(() => Int, {nullable:true})
+    gte?: number;
+    @Field(() => NestedIntWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedIntWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedFloatFilter, {nullable:true})
+    _avg?: InstanceType<typeof NestedFloatFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _sum?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedIntFilter>;
 }
 
 @InputType()
@@ -3421,6 +3828,26 @@ export class NestedEnumStoreDesignWithAggregatesFilter {
 }
 
 @InputType()
+export class NestedFloatFilter {
+    @Field(() => Float, {nullable:true})
+    equals?: number;
+    @Field(() => [Float], {nullable:true})
+    in?: Array<number>;
+    @Field(() => [Float], {nullable:true})
+    notIn?: Array<number>;
+    @Field(() => Float, {nullable:true})
+    lt?: number;
+    @Field(() => Float, {nullable:true})
+    lte?: number;
+    @Field(() => Float, {nullable:true})
+    gt?: number;
+    @Field(() => Float, {nullable:true})
+    gte?: number;
+    @Field(() => NestedFloatFilter, {nullable:true})
+    not?: InstanceType<typeof NestedFloatFilter>;
+}
+
+@InputType()
 export class NestedIntFilter {
     @Field(() => Int, {nullable:true})
     equals?: number;
@@ -3460,6 +3887,36 @@ export class NestedIntNullableFilter {
     not?: InstanceType<typeof NestedIntNullableFilter>;
     @Field(() => Boolean, {nullable:true})
     isSet?: boolean;
+}
+
+@InputType()
+export class NestedIntWithAggregatesFilter {
+    @Field(() => Int, {nullable:true})
+    equals?: number;
+    @Field(() => [Int], {nullable:true})
+    in?: Array<number>;
+    @Field(() => [Int], {nullable:true})
+    notIn?: Array<number>;
+    @Field(() => Int, {nullable:true})
+    lt?: number;
+    @Field(() => Int, {nullable:true})
+    lte?: number;
+    @Field(() => Int, {nullable:true})
+    gt?: number;
+    @Field(() => Int, {nullable:true})
+    gte?: number;
+    @Field(() => NestedIntWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedIntWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedFloatFilter, {nullable:true})
+    _avg?: InstanceType<typeof NestedFloatFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _sum?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedIntFilter>;
 }
 
 @InputType()
@@ -3902,6 +4359,12 @@ export class ProductAggregateArgs {
 }
 
 @InputType()
+export class ProductAvgOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    position?: `${SortOrder}`;
+}
+
+@InputType()
 export class ProductCountOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
@@ -3911,6 +4374,8 @@ export class ProductCountOrderByAggregateInput {
     type?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     url?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    position?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     mediaId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -3948,6 +4413,8 @@ export class ProductCreateManyMediaInput {
     type!: `${ProductType}`;
     @Field(() => String, {nullable:false})
     url!: string;
+    @Field(() => Int, {nullable:false})
+    position!: number;
     @Field(() => String, {nullable:true})
     title?: string;
     @Field(() => String, {nullable:true})
@@ -3983,6 +4450,8 @@ export class ProductCreateManyStoreInput {
     type!: `${ProductType}`;
     @Field(() => String, {nullable:false})
     url!: string;
+    @Field(() => Int, {nullable:false})
+    position!: number;
     @Field(() => String, {nullable:true})
     mediaId?: string;
     @Field(() => String, {nullable:true})
@@ -4011,6 +4480,8 @@ export class ProductCreateManyInput {
     type!: `${ProductType}`;
     @Field(() => String, {nullable:false})
     url!: string;
+    @Field(() => Int, {nullable:false})
+    position!: number;
     @Field(() => String, {nullable:true})
     mediaId?: string;
     @Field(() => String, {nullable:true})
@@ -4093,6 +4564,8 @@ export class ProductCreateWithoutMediaInput {
     type!: `${ProductType}`;
     @Field(() => String, {nullable:false})
     url!: string;
+    @Field(() => Int, {nullable:false})
+    position!: number;
     @Field(() => String, {nullable:true})
     title?: string;
     @Field(() => String, {nullable:true})
@@ -4121,6 +4594,8 @@ export class ProductCreateWithoutStoreInput {
     type!: `${ProductType}`;
     @Field(() => String, {nullable:false})
     url!: string;
+    @Field(() => Int, {nullable:false})
+    position!: number;
     @Field(() => String, {nullable:true})
     title?: string;
     @Field(() => String, {nullable:true})
@@ -4149,6 +4624,8 @@ export class ProductCreateInput {
     type!: `${ProductType}`;
     @Field(() => String, {nullable:false})
     url!: string;
+    @Field(() => Int, {nullable:false})
+    position!: number;
     @Field(() => String, {nullable:true})
     title?: string;
     @Field(() => String, {nullable:true})
@@ -4207,6 +4684,8 @@ export class ProductMaxOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     url?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
+    position?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
     mediaId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     title?: `${SortOrder}`;
@@ -4236,6 +4715,8 @@ export class ProductMinOrderByAggregateInput {
     type?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     url?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    position?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     mediaId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -4273,6 +4754,8 @@ export class ProductOrderByWithAggregationInput {
     @Field(() => SortOrder, {nullable:true})
     url?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
+    position?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
     mediaId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     title?: `${SortOrder}`;
@@ -4292,10 +4775,14 @@ export class ProductOrderByWithAggregationInput {
     updatedAt?: `${SortOrder}`;
     @Field(() => ProductCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof ProductCountOrderByAggregateInput>;
+    @Field(() => ProductAvgOrderByAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof ProductAvgOrderByAggregateInput>;
     @Field(() => ProductMaxOrderByAggregateInput, {nullable:true})
     _max?: InstanceType<typeof ProductMaxOrderByAggregateInput>;
     @Field(() => ProductMinOrderByAggregateInput, {nullable:true})
     _min?: InstanceType<typeof ProductMinOrderByAggregateInput>;
+    @Field(() => ProductSumOrderByAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof ProductSumOrderByAggregateInput>;
 }
 
 @InputType()
@@ -4308,6 +4795,8 @@ export class ProductOrderByWithRelationInput {
     type?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     url?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    position?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     mediaId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -4348,6 +4837,8 @@ export class ProductScalarWhereWithAggregatesInput {
     type?: InstanceType<typeof EnumProductTypeWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     url?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => IntWithAggregatesFilter, {nullable:true})
+    position?: InstanceType<typeof IntWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     mediaId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
@@ -4384,6 +4875,8 @@ export class ProductScalarWhereInput {
     type?: InstanceType<typeof EnumProductTypeFilter>;
     @Field(() => StringFilter, {nullable:true})
     url?: InstanceType<typeof StringFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    position?: InstanceType<typeof IntFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     mediaId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
@@ -4402,6 +4895,12 @@ export class ProductScalarWhereInput {
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
     updatedAt?: InstanceType<typeof DateTimeFilter>;
+}
+
+@InputType()
+export class ProductSumOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    position?: `${SortOrder}`;
 }
 
 @InputType()
@@ -4446,6 +4945,8 @@ export class ProductUncheckedCreateWithoutMediaInput {
     type!: `${ProductType}`;
     @Field(() => String, {nullable:false})
     url!: string;
+    @Field(() => Int, {nullable:false})
+    position!: number;
     @Field(() => String, {nullable:true})
     title?: string;
     @Field(() => String, {nullable:true})
@@ -4474,6 +4975,8 @@ export class ProductUncheckedCreateWithoutStoreInput {
     type!: `${ProductType}`;
     @Field(() => String, {nullable:false})
     url!: string;
+    @Field(() => Int, {nullable:false})
+    position!: number;
     @Field(() => String, {nullable:true})
     mediaId?: string;
     @Field(() => String, {nullable:true})
@@ -4502,6 +5005,8 @@ export class ProductUncheckedCreateInput {
     type!: `${ProductType}`;
     @Field(() => String, {nullable:false})
     url!: string;
+    @Field(() => Int, {nullable:false})
+    position!: number;
     @Field(() => String, {nullable:true})
     mediaId?: string;
     @Field(() => String, {nullable:true})
@@ -4567,6 +5072,8 @@ export class ProductUncheckedUpdateManyWithoutMediaInput {
     type?: InstanceType<typeof EnumProductTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    position?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -4630,6 +5137,8 @@ export class ProductUncheckedUpdateManyWithoutStoreInput {
     type?: InstanceType<typeof EnumProductTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    position?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     mediaId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -4656,6 +5165,8 @@ export class ProductUncheckedUpdateManyInput {
     type?: InstanceType<typeof EnumProductTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    position?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     mediaId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -4684,6 +5195,8 @@ export class ProductUncheckedUpdateWithoutMediaInput {
     type?: InstanceType<typeof EnumProductTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    position?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -4710,6 +5223,8 @@ export class ProductUncheckedUpdateWithoutStoreInput {
     type?: InstanceType<typeof EnumProductTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    position?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     mediaId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -4736,6 +5251,8 @@ export class ProductUncheckedUpdateInput {
     type?: InstanceType<typeof EnumProductTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    position?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     mediaId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -4764,6 +5281,8 @@ export class ProductUpdateManyMutationInput {
     type?: InstanceType<typeof EnumProductTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    position?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -4902,6 +5421,8 @@ export class ProductUpdateWithoutMediaInput {
     type?: InstanceType<typeof EnumProductTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    position?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -4928,6 +5449,8 @@ export class ProductUpdateWithoutStoreInput {
     type?: InstanceType<typeof EnumProductTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    position?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -4954,6 +5477,8 @@ export class ProductUpdateInput {
     type?: InstanceType<typeof EnumProductTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    position?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     title?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -5016,6 +5541,8 @@ export class ProductWhereUniqueInput {
     type?: InstanceType<typeof EnumProductTypeFilter>;
     @Field(() => StringFilter, {nullable:true})
     url?: InstanceType<typeof StringFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    position?: InstanceType<typeof IntFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     mediaId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
@@ -5056,6 +5583,8 @@ export class ProductWhereInput {
     type?: InstanceType<typeof EnumProductTypeFilter>;
     @Field(() => StringFilter, {nullable:true})
     url?: InstanceType<typeof StringFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    position?: InstanceType<typeof IntFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     mediaId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
@@ -5090,6 +5619,8 @@ export class Product {
     type!: `${ProductType}`;
     @Field(() => String, {nullable:false})
     url!: string;
+    @Field(() => Int, {nullable:false})
+    position!: number;
     @Field(() => String, {nullable:true})
     mediaId!: string | null;
     @Field(() => String, {nullable:true})
@@ -5147,6 +5678,764 @@ export class UpsertOneProductArgs {
     @Field(() => ProductUpdateInput, {nullable:false})
     @Type(() => ProductUpdateInput)
     update!: InstanceType<typeof ProductUpdateInput>;
+}
+
+@ArgsType()
+export class CreateManySessionArgs {
+    @Field(() => [SessionCreateManyInput], {nullable:false})
+    @Type(() => SessionCreateManyInput)
+    data!: Array<SessionCreateManyInput>;
+}
+
+@ArgsType()
+export class CreateOneSessionArgs {
+    @Field(() => SessionCreateInput, {nullable:false})
+    @Type(() => SessionCreateInput)
+    data!: InstanceType<typeof SessionCreateInput>;
+}
+
+@ArgsType()
+export class DeleteManySessionArgs {
+    @Field(() => SessionWhereInput, {nullable:true})
+    @Type(() => SessionWhereInput)
+    where?: InstanceType<typeof SessionWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class DeleteOneSessionArgs {
+    @Field(() => SessionWhereUniqueInput, {nullable:false})
+    @Type(() => SessionWhereUniqueInput)
+    where!: Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>;
+}
+
+@ArgsType()
+export class FindFirstSessionOrThrowArgs {
+    @Field(() => SessionWhereInput, {nullable:true})
+    @Type(() => SessionWhereInput)
+    where?: InstanceType<typeof SessionWhereInput>;
+    @Field(() => [SessionOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<SessionOrderByWithRelationInput>;
+    @Field(() => SessionWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [SessionScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${SessionScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindFirstSessionArgs {
+    @Field(() => SessionWhereInput, {nullable:true})
+    @Type(() => SessionWhereInput)
+    where?: InstanceType<typeof SessionWhereInput>;
+    @Field(() => [SessionOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<SessionOrderByWithRelationInput>;
+    @Field(() => SessionWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [SessionScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${SessionScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindManySessionArgs {
+    @Field(() => SessionWhereInput, {nullable:true})
+    @Type(() => SessionWhereInput)
+    where?: InstanceType<typeof SessionWhereInput>;
+    @Field(() => [SessionOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<SessionOrderByWithRelationInput>;
+    @Field(() => SessionWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [SessionScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${SessionScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindUniqueSessionOrThrowArgs {
+    @Field(() => SessionWhereUniqueInput, {nullable:false})
+    @Type(() => SessionWhereUniqueInput)
+    where!: Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>;
+}
+
+@ArgsType()
+export class FindUniqueSessionArgs {
+    @Field(() => SessionWhereUniqueInput, {nullable:false})
+    @Type(() => SessionWhereUniqueInput)
+    where!: Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>;
+}
+
+@ArgsType()
+export class SessionAggregateArgs {
+    @Field(() => SessionWhereInput, {nullable:true})
+    @Type(() => SessionWhereInput)
+    where?: InstanceType<typeof SessionWhereInput>;
+    @Field(() => [SessionOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<SessionOrderByWithRelationInput>;
+    @Field(() => SessionWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+}
+
+@InputType()
+export class SessionCountOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    influencerId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    token?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    valid?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    expiresAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class SessionCreateManyInfluencerInputEnvelope {
+    @Field(() => [SessionCreateManyInfluencerInput], {nullable:false})
+    @Type(() => SessionCreateManyInfluencerInput)
+    data!: Array<SessionCreateManyInfluencerInput>;
+}
+
+@InputType()
+export class SessionCreateManyInfluencerInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => Boolean, {nullable:true})
+    valid?: boolean;
+    @Field(() => Date, {nullable:true})
+    expiresAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class SessionCreateManyInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    influencerId?: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => Boolean, {nullable:true})
+    valid?: boolean;
+    @Field(() => Date, {nullable:true})
+    expiresAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class SessionCreateNestedManyWithoutInfluencerInput {
+    @Field(() => [SessionCreateWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionCreateWithoutInfluencerInput)
+    create?: Array<SessionCreateWithoutInfluencerInput>;
+    @Field(() => [SessionCreateOrConnectWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionCreateOrConnectWithoutInfluencerInput)
+    connectOrCreate?: Array<SessionCreateOrConnectWithoutInfluencerInput>;
+    @Field(() => SessionCreateManyInfluencerInputEnvelope, {nullable:true})
+    @Type(() => SessionCreateManyInfluencerInputEnvelope)
+    createMany?: InstanceType<typeof SessionCreateManyInfluencerInputEnvelope>;
+    @Field(() => [SessionWhereUniqueInput], {nullable:true})
+    @Type(() => SessionWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>>;
+}
+
+@InputType()
+export class SessionCreateOrConnectWithoutInfluencerInput {
+    @Field(() => SessionWhereUniqueInput, {nullable:false})
+    @Type(() => SessionWhereUniqueInput)
+    where!: Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => SessionCreateWithoutInfluencerInput, {nullable:false})
+    @Type(() => SessionCreateWithoutInfluencerInput)
+    create!: InstanceType<typeof SessionCreateWithoutInfluencerInput>;
+}
+
+@InputType()
+export class SessionCreateWithoutInfluencerInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => Boolean, {nullable:true})
+    valid?: boolean;
+    @Field(() => Date, {nullable:true})
+    expiresAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class SessionCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => Boolean, {nullable:true})
+    valid?: boolean;
+    @Field(() => Date, {nullable:true})
+    expiresAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => InfluencerCreateNestedOneWithoutSessionsInput, {nullable:true})
+    influencer?: InstanceType<typeof InfluencerCreateNestedOneWithoutSessionsInput>;
+}
+
+@ArgsType()
+export class SessionGroupByArgs {
+    @Field(() => SessionWhereInput, {nullable:true})
+    @Type(() => SessionWhereInput)
+    where?: InstanceType<typeof SessionWhereInput>;
+    @Field(() => [SessionOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<SessionOrderByWithAggregationInput>;
+    @Field(() => [SessionScalarFieldEnum], {nullable:false})
+    by!: Array<`${SessionScalarFieldEnum}`>;
+    @Field(() => SessionScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof SessionScalarWhereWithAggregatesInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+}
+
+@InputType()
+export class SessionListRelationFilter {
+    @Field(() => SessionWhereInput, {nullable:true})
+    every?: InstanceType<typeof SessionWhereInput>;
+    @Field(() => SessionWhereInput, {nullable:true})
+    some?: InstanceType<typeof SessionWhereInput>;
+    @Field(() => SessionWhereInput, {nullable:true})
+    none?: InstanceType<typeof SessionWhereInput>;
+}
+
+@InputType()
+export class SessionMaxOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    influencerId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    token?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    valid?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    expiresAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class SessionMinOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    influencerId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    token?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    valid?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    expiresAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class SessionOrderByRelationAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    _count?: `${SortOrder}`;
+}
+
+@InputType()
+export class SessionOrderByWithAggregationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    influencerId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    token?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    valid?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    expiresAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => SessionCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof SessionCountOrderByAggregateInput>;
+    @Field(() => SessionMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof SessionMaxOrderByAggregateInput>;
+    @Field(() => SessionMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof SessionMinOrderByAggregateInput>;
+}
+
+@InputType()
+export class SessionOrderByWithRelationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    influencerId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    token?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    valid?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    expiresAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => InfluencerOrderByWithRelationInput, {nullable:true})
+    influencer?: InstanceType<typeof InfluencerOrderByWithRelationInput>;
+}
+
+@InputType()
+export class SessionScalarWhereWithAggregatesInput {
+    @Field(() => [SessionScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<SessionScalarWhereWithAggregatesInput>;
+    @Field(() => [SessionScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<SessionScalarWhereWithAggregatesInput>;
+    @Field(() => [SessionScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<SessionScalarWhereWithAggregatesInput>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    id?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    influencerId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    token?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    valid?: InstanceType<typeof BoolWithAggregatesFilter>;
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    expiresAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+}
+
+@InputType()
+export class SessionScalarWhereInput {
+    @Field(() => [SessionScalarWhereInput], {nullable:true})
+    AND?: Array<SessionScalarWhereInput>;
+    @Field(() => [SessionScalarWhereInput], {nullable:true})
+    OR?: Array<SessionScalarWhereInput>;
+    @Field(() => [SessionScalarWhereInput], {nullable:true})
+    NOT?: Array<SessionScalarWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    influencerId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    token?: InstanceType<typeof StringFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    valid?: InstanceType<typeof BoolFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    expiresAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+}
+
+@InputType()
+export class SessionUncheckedCreateNestedManyWithoutInfluencerInput {
+    @Field(() => [SessionCreateWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionCreateWithoutInfluencerInput)
+    create?: Array<SessionCreateWithoutInfluencerInput>;
+    @Field(() => [SessionCreateOrConnectWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionCreateOrConnectWithoutInfluencerInput)
+    connectOrCreate?: Array<SessionCreateOrConnectWithoutInfluencerInput>;
+    @Field(() => SessionCreateManyInfluencerInputEnvelope, {nullable:true})
+    @Type(() => SessionCreateManyInfluencerInputEnvelope)
+    createMany?: InstanceType<typeof SessionCreateManyInfluencerInputEnvelope>;
+    @Field(() => [SessionWhereUniqueInput], {nullable:true})
+    @Type(() => SessionWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>>;
+}
+
+@InputType()
+export class SessionUncheckedCreateWithoutInfluencerInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => Boolean, {nullable:true})
+    valid?: boolean;
+    @Field(() => Date, {nullable:true})
+    expiresAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class SessionUncheckedCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    influencerId?: string;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => Boolean, {nullable:true})
+    valid?: boolean;
+    @Field(() => Date, {nullable:true})
+    expiresAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class SessionUncheckedUpdateManyWithoutInfluencerNestedInput {
+    @Field(() => [SessionCreateWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionCreateWithoutInfluencerInput)
+    create?: Array<SessionCreateWithoutInfluencerInput>;
+    @Field(() => [SessionCreateOrConnectWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionCreateOrConnectWithoutInfluencerInput)
+    connectOrCreate?: Array<SessionCreateOrConnectWithoutInfluencerInput>;
+    @Field(() => [SessionUpsertWithWhereUniqueWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionUpsertWithWhereUniqueWithoutInfluencerInput)
+    upsert?: Array<SessionUpsertWithWhereUniqueWithoutInfluencerInput>;
+    @Field(() => SessionCreateManyInfluencerInputEnvelope, {nullable:true})
+    @Type(() => SessionCreateManyInfluencerInputEnvelope)
+    createMany?: InstanceType<typeof SessionCreateManyInfluencerInputEnvelope>;
+    @Field(() => [SessionWhereUniqueInput], {nullable:true})
+    @Type(() => SessionWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [SessionWhereUniqueInput], {nullable:true})
+    @Type(() => SessionWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [SessionWhereUniqueInput], {nullable:true})
+    @Type(() => SessionWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [SessionWhereUniqueInput], {nullable:true})
+    @Type(() => SessionWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [SessionUpdateWithWhereUniqueWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionUpdateWithWhereUniqueWithoutInfluencerInput)
+    update?: Array<SessionUpdateWithWhereUniqueWithoutInfluencerInput>;
+    @Field(() => [SessionUpdateManyWithWhereWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionUpdateManyWithWhereWithoutInfluencerInput)
+    updateMany?: Array<SessionUpdateManyWithWhereWithoutInfluencerInput>;
+    @Field(() => [SessionScalarWhereInput], {nullable:true})
+    @Type(() => SessionScalarWhereInput)
+    deleteMany?: Array<SessionScalarWhereInput>;
+}
+
+@InputType()
+export class SessionUncheckedUpdateManyWithoutInfluencerInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    valid?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    expiresAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class SessionUncheckedUpdateManyInput {
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    influencerId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    valid?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    expiresAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class SessionUncheckedUpdateWithoutInfluencerInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    valid?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    expiresAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class SessionUncheckedUpdateInput {
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    influencerId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    valid?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    expiresAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class SessionUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    valid?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    expiresAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class SessionUpdateManyWithWhereWithoutInfluencerInput {
+    @Field(() => SessionScalarWhereInput, {nullable:false})
+    @Type(() => SessionScalarWhereInput)
+    where!: InstanceType<typeof SessionScalarWhereInput>;
+    @Field(() => SessionUpdateManyMutationInput, {nullable:false})
+    @Type(() => SessionUpdateManyMutationInput)
+    data!: InstanceType<typeof SessionUpdateManyMutationInput>;
+}
+
+@InputType()
+export class SessionUpdateManyWithoutInfluencerNestedInput {
+    @Field(() => [SessionCreateWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionCreateWithoutInfluencerInput)
+    create?: Array<SessionCreateWithoutInfluencerInput>;
+    @Field(() => [SessionCreateOrConnectWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionCreateOrConnectWithoutInfluencerInput)
+    connectOrCreate?: Array<SessionCreateOrConnectWithoutInfluencerInput>;
+    @Field(() => [SessionUpsertWithWhereUniqueWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionUpsertWithWhereUniqueWithoutInfluencerInput)
+    upsert?: Array<SessionUpsertWithWhereUniqueWithoutInfluencerInput>;
+    @Field(() => SessionCreateManyInfluencerInputEnvelope, {nullable:true})
+    @Type(() => SessionCreateManyInfluencerInputEnvelope)
+    createMany?: InstanceType<typeof SessionCreateManyInfluencerInputEnvelope>;
+    @Field(() => [SessionWhereUniqueInput], {nullable:true})
+    @Type(() => SessionWhereUniqueInput)
+    set?: Array<Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [SessionWhereUniqueInput], {nullable:true})
+    @Type(() => SessionWhereUniqueInput)
+    disconnect?: Array<Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [SessionWhereUniqueInput], {nullable:true})
+    @Type(() => SessionWhereUniqueInput)
+    delete?: Array<Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [SessionWhereUniqueInput], {nullable:true})
+    @Type(() => SessionWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>>;
+    @Field(() => [SessionUpdateWithWhereUniqueWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionUpdateWithWhereUniqueWithoutInfluencerInput)
+    update?: Array<SessionUpdateWithWhereUniqueWithoutInfluencerInput>;
+    @Field(() => [SessionUpdateManyWithWhereWithoutInfluencerInput], {nullable:true})
+    @Type(() => SessionUpdateManyWithWhereWithoutInfluencerInput)
+    updateMany?: Array<SessionUpdateManyWithWhereWithoutInfluencerInput>;
+    @Field(() => [SessionScalarWhereInput], {nullable:true})
+    @Type(() => SessionScalarWhereInput)
+    deleteMany?: Array<SessionScalarWhereInput>;
+}
+
+@InputType()
+export class SessionUpdateWithWhereUniqueWithoutInfluencerInput {
+    @Field(() => SessionWhereUniqueInput, {nullable:false})
+    @Type(() => SessionWhereUniqueInput)
+    where!: Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => SessionUpdateWithoutInfluencerInput, {nullable:false})
+    @Type(() => SessionUpdateWithoutInfluencerInput)
+    data!: InstanceType<typeof SessionUpdateWithoutInfluencerInput>;
+}
+
+@InputType()
+export class SessionUpdateWithoutInfluencerInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    valid?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    expiresAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class SessionUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    token?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    valid?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    expiresAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => InfluencerUpdateOneWithoutSessionsNestedInput, {nullable:true})
+    influencer?: InstanceType<typeof InfluencerUpdateOneWithoutSessionsNestedInput>;
+}
+
+@InputType()
+export class SessionUpsertWithWhereUniqueWithoutInfluencerInput {
+    @Field(() => SessionWhereUniqueInput, {nullable:false})
+    @Type(() => SessionWhereUniqueInput)
+    where!: Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => SessionUpdateWithoutInfluencerInput, {nullable:false})
+    @Type(() => SessionUpdateWithoutInfluencerInput)
+    update!: InstanceType<typeof SessionUpdateWithoutInfluencerInput>;
+    @Field(() => SessionCreateWithoutInfluencerInput, {nullable:false})
+    @Type(() => SessionCreateWithoutInfluencerInput)
+    create!: InstanceType<typeof SessionCreateWithoutInfluencerInput>;
+}
+
+@InputType()
+export class SessionWhereUniqueInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    token?: string;
+    @Field(() => [SessionWhereInput], {nullable:true})
+    AND?: Array<SessionWhereInput>;
+    @Field(() => [SessionWhereInput], {nullable:true})
+    OR?: Array<SessionWhereInput>;
+    @Field(() => [SessionWhereInput], {nullable:true})
+    NOT?: Array<SessionWhereInput>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    influencerId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    valid?: InstanceType<typeof BoolFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    expiresAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => InfluencerNullableScalarRelationFilter, {nullable:true})
+    influencer?: InstanceType<typeof InfluencerNullableScalarRelationFilter>;
+}
+
+@InputType()
+export class SessionWhereInput {
+    @Field(() => [SessionWhereInput], {nullable:true})
+    AND?: Array<SessionWhereInput>;
+    @Field(() => [SessionWhereInput], {nullable:true})
+    OR?: Array<SessionWhereInput>;
+    @Field(() => [SessionWhereInput], {nullable:true})
+    NOT?: Array<SessionWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    influencerId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    token?: InstanceType<typeof StringFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    valid?: InstanceType<typeof BoolFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    expiresAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => InfluencerNullableScalarRelationFilter, {nullable:true})
+    influencer?: InstanceType<typeof InfluencerNullableScalarRelationFilter>;
+}
+
+@ObjectType()
+export class Session {
+    @Field(() => ID, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:true})
+    influencerId!: string | null;
+    @Field(() => String, {nullable:false})
+    token!: string;
+    @Field(() => Boolean, {defaultValue:true,nullable:false})
+    valid!: boolean;
+    @Field(() => Date, {nullable:true})
+    expiresAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
+    @Field(() => Influencer, {nullable:true})
+    influencer?: InstanceType<typeof Influencer> | null;
+}
+
+@ArgsType()
+export class UpdateManySessionArgs {
+    @Field(() => SessionUpdateManyMutationInput, {nullable:false})
+    @Type(() => SessionUpdateManyMutationInput)
+    data!: InstanceType<typeof SessionUpdateManyMutationInput>;
+    @Field(() => SessionWhereInput, {nullable:true})
+    @Type(() => SessionWhereInput)
+    where?: InstanceType<typeof SessionWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class UpdateOneSessionArgs {
+    @Field(() => SessionUpdateInput, {nullable:false})
+    @Type(() => SessionUpdateInput)
+    data!: InstanceType<typeof SessionUpdateInput>;
+    @Field(() => SessionWhereUniqueInput, {nullable:false})
+    @Type(() => SessionWhereUniqueInput)
+    where!: Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>;
+}
+
+@ArgsType()
+export class UpsertOneSessionArgs {
+    @Field(() => SessionWhereUniqueInput, {nullable:false})
+    @Type(() => SessionWhereUniqueInput)
+    where!: Prisma.AtLeast<SessionWhereUniqueInput, 'id' | 'token'>;
+    @Field(() => SessionCreateInput, {nullable:false})
+    @Type(() => SessionCreateInput)
+    create!: InstanceType<typeof SessionCreateInput>;
+    @Field(() => SessionUpdateInput, {nullable:false})
+    @Type(() => SessionUpdateInput)
+    update!: InstanceType<typeof SessionUpdateInput>;
 }
 
 @InputType()
