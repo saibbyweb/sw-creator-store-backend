@@ -6,6 +6,8 @@ import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
 import { AppResolver } from './app.resolver';
 import { DbModule } from './db/db.module';
 import { InfluencerModule } from './influencer/influencer.module';
+import { StoreModule } from './store/store.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { InfluencerModule } from './influencer/influencer.module';
     }),
     DbModule,
     InfluencerModule,
+    StoreModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

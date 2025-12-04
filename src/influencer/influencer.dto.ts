@@ -1,5 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { Address, AddressCreateInput } from 'src/---generated---';
+import {
+  Address,
+  AddressCreateInput,
+  SocialLink,
+  SocialLinkCreateInput,
+} from 'src/---generated---';
 
 @InputType()
 export class CreateInfluencerInput {
@@ -23,13 +28,22 @@ export class CreateInfluencerInput {
 
   @Field(() => String)
   phoneNumber: string;
+
+  @Field(() => [SocialLinkCreateInput])
+  socialLinks: SocialLink[];
+
+  @Field(() => String, { nullable: true })
+  displayName?: string;
+
+  @Field(() => String, { nullable: true })
+  bio?: string;
+
+  @Field(() => String, { nullable: true })
+  profilePicture?: string;
 }
 
 @InputType()
 export class UpdateInfluencerPasswordInput {
-  @Field(() => String)
-  influencerId: string;
-
   @Field(() => String)
   password: string;
 

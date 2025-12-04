@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Influencer } from 'src/---generated---';
 import { DbService } from 'src/db/db.service';
-import { StripeService } from 'src/stripe/stripe.service';
 import {
   CreateInfluencerInput,
   UpdateInfluencerPasswordInput,
@@ -11,10 +10,7 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class InfluencerService {
   private readonly logger: Logger;
-  constructor(
-    private readonly db: DbService,
-    private readonly stripeService: StripeService,
-  ) {
+  constructor(private readonly db: DbService) {
     this.logger = new Logger(InfluencerService.name);
   }
 
@@ -29,34 +25,21 @@ export class InfluencerService {
         },
       });
 
-      const { stripeAccountId, stripeAccountType } =
-        await this.stripeService.createStripeConnectAccount({
-          influencerId: influencer.id,
-          country: influencer.countryCode,
-          email: influencer.email,
-          username: influencer.username,
-        });
-
-      const updatedInfluencer = await this.db.influencer.update({
-        where: { id: influencer.id },
-        data: {
-          stripeAccountId: stripeAccountId,
-          stripeAccountType: stripeAccountType,
-        },
-      });
-
-      return updatedInfluencer;
-    } catch (error) {
+      return influencer;
+    } catch {
       this.logger.error('Failed to create influencer');
       throw new Error('Failed to create influencer');
     }
   }
 
-  async updateInfluencerPassword(input: UpdateInfluencerPasswordInput) {
+  async updateInfluencerPassword(
+    input: UpdateInfluencerPasswordInput,
+    influencerId: string,
+  ) {
     try {
       const influencer = await this.db.influencer.findUnique({
         where: {
-          id: input.influencerId,
+          id: influencerId,
         },
       });
 
@@ -70,7 +53,7 @@ export class InfluencerService {
       );
 
       if (!isPasswordValid) {
-        throw new Error('Invalid password');
+        throw new Error('Invalid Credentials');
       }
 
       const hashedNewPassword = await bcrypt.hash(input.newPassword, 10);

@@ -36,25 +36,143 @@ type Address {
   country    String
 }
 
+enum SocialPlatform {
+  INSTAGRAM
+  TIKTOK
+  YOUTUBE
+  FACEBOOK
+  X
+  LINKEDIN
+  PINTEREST
+  REDDIT
+  EMAIL
+  URL
+}
+
+enum Font {
+  MONTSERRAT
+  ROBOTO
+  POPPINS
+}
+
+type SocialLink {
+  platform SocialPlatform
+  url      String
+}
+
 model Influencer {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  username    String  @unique
-  email       String  @unique
+  username    String       @unique
+  email       String       @unique
   password    String
-  role        Role    @default(INFLUENCER)
+  role        Role         @default(INFLUENCER)
   countryCode String
   phoneNumber String
   address     Address
+  socialLinks SocialLink[]
 
-  stripeAccountId          String? @unique
   stripeOnboardingComplete Boolean @default(false)
   chargesEnabled           Boolean @default(false)
   payoutsEnabled           Boolean @default(false)
   detailsSubmitted         Boolean @default(false)
+  stripeAccountId          String? @unique
   stripeAccountType        String?
+
+  displayName    String?
+  bio            String?
+  profilePicture String?
 
   deletedAt DateTime?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  stores Store[]
+  media  Media[]
+}
+
+enum ProductStyle {
+  BUTTON
+  CALLOUT
+  EMBED
+}
+
+enum ProductType {
+  MEET
+  COURSE
+  GUIDE
+  WEBINAR
+  PERSONALIZED_VIDEO
+}
+
+model Product {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  style      ProductStyle
+  type       ProductType
+  url        String
+  mediaId    String?      @db.ObjectId
+  media      Media?       @relation(fields: [mediaId], references: [id])
+  title      String?
+  subTitle   String?
+  buttonText String?
+
+  storeId   String  @db.ObjectId
+  store     Store   @relation(fields: [storeId], references: [id])
+  published Boolean
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([storeId])
+}
+
+enum StoreDesign {
+  CLASSIC
+  MODERN
+  CONTEMPORARY
+  MINIMALISTIC
+}
+
+model Store {
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  slug           String      @unique
+  name           String
+  design         StoreDesign
+  primaryColor   String
+  secondaryColor String
+  font           Font
+
+  influencerId String     @db.ObjectId
+  influencer   Influencer @relation(fields: [influencerId], references: [id])
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+
+  @@index([influencerId])
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  AUDIO
+  OTHER
+}
+
+model Media {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  url          String
+  type         MediaType
+  influencerId String     @db.ObjectId
+  influencer   Influencer @relation(fields: [influencerId], references: [id])
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  products Product[]
+
+  @@index([influencerId])
 }
