@@ -98,6 +98,12 @@ model Influencer {
   googleRefreshToken      String?
   googleTokenExpiry       DateTime?
 
+  // Zoom Integration
+  zoomConnected    Boolean   @default(false)
+  zoomAccessToken  String?
+  zoomRefreshToken String?
+  zoomTokenExpiry  DateTime?
+
   displayName    String?
   bio            String?
   profilePicture String?

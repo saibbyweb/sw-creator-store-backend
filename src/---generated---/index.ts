@@ -143,6 +143,10 @@ export enum InfluencerScalarFieldEnum {
     googleAccessToken = "googleAccessToken",
     googleRefreshToken = "googleRefreshToken",
     googleTokenExpiry = "googleTokenExpiry",
+    zoomConnected = "zoomConnected",
+    zoomAccessToken = "zoomAccessToken",
+    zoomRefreshToken = "zoomRefreshToken",
+    zoomTokenExpiry = "zoomTokenExpiry",
     displayName = "displayName",
     bio = "bio",
     profilePicture = "profilePicture",
@@ -408,6 +412,14 @@ export class InfluencerCountOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     googleTokenExpiry?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
+    zoomConnected?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomAccessToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomRefreshToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomTokenExpiry?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
     displayName?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     bio?: `${SortOrder}`;
@@ -463,6 +475,14 @@ export class InfluencerCreateManyInput {
     googleRefreshToken?: string;
     @Field(() => Date, {nullable:true})
     googleTokenExpiry?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    zoomConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    zoomAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    zoomRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    zoomTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -588,6 +608,14 @@ export class InfluencerCreateWithoutMediaInput {
     googleRefreshToken?: string;
     @Field(() => Date, {nullable:true})
     googleTokenExpiry?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    zoomConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    zoomAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    zoomRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    zoomTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -648,6 +676,14 @@ export class InfluencerCreateWithoutSessionsInput {
     googleRefreshToken?: string;
     @Field(() => Date, {nullable:true})
     googleTokenExpiry?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    zoomConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    zoomAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    zoomRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    zoomTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -708,6 +744,14 @@ export class InfluencerCreateWithoutStoresInput {
     googleRefreshToken?: string;
     @Field(() => Date, {nullable:true})
     googleTokenExpiry?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    zoomConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    zoomAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    zoomRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    zoomTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -768,6 +812,14 @@ export class InfluencerCreateInput {
     googleRefreshToken?: string;
     @Field(() => Date, {nullable:true})
     googleTokenExpiry?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    zoomConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    zoomAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    zoomRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    zoomTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -844,6 +896,14 @@ export class InfluencerMaxOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     googleTokenExpiry?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
+    zoomConnected?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomAccessToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomRefreshToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomTokenExpiry?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
     displayName?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     bio?: `${SortOrder}`;
@@ -895,6 +955,14 @@ export class InfluencerMinOrderByAggregateInput {
     googleRefreshToken?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     googleTokenExpiry?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomConnected?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomAccessToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomRefreshToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomTokenExpiry?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     displayName?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -955,6 +1023,14 @@ export class InfluencerOrderByWithAggregationInput {
     googleRefreshToken?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     googleTokenExpiry?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomConnected?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomAccessToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomRefreshToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomTokenExpiry?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     displayName?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -1017,6 +1093,14 @@ export class InfluencerOrderByWithRelationInput {
     googleRefreshToken?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     googleTokenExpiry?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomConnected?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomAccessToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomRefreshToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    zoomTokenExpiry?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     displayName?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -1089,6 +1173,14 @@ export class InfluencerScalarWhereWithAggregatesInput {
     googleRefreshToken?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     displayName?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
@@ -1145,6 +1237,14 @@ export class InfluencerUncheckedCreateWithoutMediaInput {
     googleRefreshToken?: string;
     @Field(() => Date, {nullable:true})
     googleTokenExpiry?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    zoomConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    zoomAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    zoomRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    zoomTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -1205,6 +1305,14 @@ export class InfluencerUncheckedCreateWithoutSessionsInput {
     googleRefreshToken?: string;
     @Field(() => Date, {nullable:true})
     googleTokenExpiry?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    zoomConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    zoomAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    zoomRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    zoomTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -1265,6 +1373,14 @@ export class InfluencerUncheckedCreateWithoutStoresInput {
     googleRefreshToken?: string;
     @Field(() => Date, {nullable:true})
     googleTokenExpiry?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    zoomConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    zoomAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    zoomRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    zoomTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -1325,6 +1441,14 @@ export class InfluencerUncheckedCreateInput {
     googleRefreshToken?: string;
     @Field(() => Date, {nullable:true})
     googleTokenExpiry?: Date | string;
+    @Field(() => Boolean, {nullable:true})
+    zoomConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    zoomAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    zoomRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    zoomTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -1385,6 +1509,14 @@ export class InfluencerUncheckedUpdateManyInput {
     googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1439,6 +1571,14 @@ export class InfluencerUncheckedUpdateWithoutMediaInput {
     googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1497,6 +1637,14 @@ export class InfluencerUncheckedUpdateWithoutSessionsInput {
     googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1555,6 +1703,14 @@ export class InfluencerUncheckedUpdateWithoutStoresInput {
     googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1613,6 +1769,14 @@ export class InfluencerUncheckedUpdateInput {
     googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1673,6 +1837,14 @@ export class InfluencerUpdateManyMutationInput {
     googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1819,6 +1991,14 @@ export class InfluencerUpdateWithoutMediaInput {
     googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1877,6 +2057,14 @@ export class InfluencerUpdateWithoutSessionsInput {
     googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1935,6 +2123,14 @@ export class InfluencerUpdateWithoutStoresInput {
     googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1993,6 +2189,14 @@ export class InfluencerUpdateInput {
     googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -2100,6 +2304,14 @@ export class InfluencerWhereUniqueInput {
     googleRefreshToken?: InstanceType<typeof StringNullableFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     displayName?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
@@ -2168,6 +2380,14 @@ export class InfluencerWhereInput {
     googleRefreshToken?: InstanceType<typeof StringNullableFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
     googleTokenExpiry?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    zoomConnected?: InstanceType<typeof BoolFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    zoomAccessToken?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    zoomRefreshToken?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    zoomTokenExpiry?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     displayName?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
@@ -2230,6 +2450,14 @@ export class Influencer {
     googleRefreshToken!: string | null;
     @Field(() => Date, {nullable:true})
     googleTokenExpiry!: Date | null;
+    @Field(() => Boolean, {defaultValue:false,nullable:false})
+    zoomConnected!: boolean;
+    @Field(() => String, {nullable:true})
+    zoomAccessToken!: string | null;
+    @Field(() => String, {nullable:true})
+    zoomRefreshToken!: string | null;
+    @Field(() => Date, {nullable:true})
+    zoomTokenExpiry!: Date | null;
     @Field(() => String, {nullable:true})
     displayName!: string | null;
     @Field(() => String, {nullable:true})
