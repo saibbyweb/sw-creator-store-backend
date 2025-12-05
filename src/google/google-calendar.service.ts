@@ -47,8 +47,6 @@ export class CalendarService {
       orderBy: 'startTime',
     });
 
-    console.log(response.data.items);
-
     return (response.data.items || []).map((event) => ({
       id: event.id,
       summary: event.summary || '',

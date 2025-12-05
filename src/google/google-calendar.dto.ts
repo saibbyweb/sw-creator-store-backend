@@ -1,5 +1,29 @@
 import { ObjectType, Field, InputType } from '@nestjs/graphql';
 
+// Define EventPerson FIRST (before CalendarEvent uses it)
+@ObjectType()
+export class EventPerson {
+  @Field(() => String)
+  email: string;
+
+  @Field(() => Boolean, { nullable: true })
+  self?: boolean;
+}
+
+// Define EventDateTime SECOND (before CalendarEvent uses it)
+@ObjectType()
+export class EventDateTime {
+  @Field(() => String, { nullable: true })
+  dateTime?: string;
+
+  @Field(() => String, { nullable: true })
+  date?: string;
+
+  @Field(() => String, { nullable: true })
+  timeZone?: string;
+}
+
+// Now CalendarEvent can safely reference EventPerson and EventDateTime
 @ObjectType()
 export class CalendarEvent {
   @Field(() => String)
@@ -40,27 +64,6 @@ export class CalendarEvent {
 
   @Field(() => String, { nullable: true })
   iCalUID?: string;
-}
-
-@ObjectType()
-export class EventPerson {
-  @Field(() => String)
-  email: string;
-
-  @Field(() => Boolean, { nullable: true })
-  self?: boolean;
-}
-
-@ObjectType()
-export class EventDateTime {
-  @Field(() => String, { nullable: true })
-  dateTime?: string;
-
-  @Field(() => String, { nullable: true })
-  date?: string;
-
-  @Field(() => String, { nullable: true })
-  timeZone?: string;
 }
 
 @InputType()
