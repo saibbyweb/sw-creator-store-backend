@@ -14,6 +14,10 @@ export class InfluencerService {
     this.logger = new Logger(InfluencerService.name);
   }
 
+  async influencers(): Promise<Influencer[]> {
+    return this.db.influencer.findMany();
+  }
+
   async loggedInInfluencer(influencerId: string): Promise<Influencer> {
     try {
       const influencer = await this.db.influencer.findUnique({

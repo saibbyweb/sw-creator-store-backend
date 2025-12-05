@@ -92,6 +92,12 @@ model Influencer {
   stripeAccountId          String? @unique
   stripeAccountType        String?
 
+  // Google Calendar Integration
+  googleCalendarConnected Boolean   @default(false)
+  googleAccessToken       String?
+  googleRefreshToken      String?
+  googleTokenExpiry       DateTime?
+
   displayName    String?
   bio            String?
   profilePicture String?

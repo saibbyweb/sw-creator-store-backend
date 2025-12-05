@@ -9,6 +9,11 @@ import { CurrentEntity, InfluencerGuard } from 'src/auth';
 export class InfluencerResolver {
   constructor(private readonly iS: InfluencerService) {}
 
+  @Query(() => [Influencer])
+  async influencers(): Promise<Influencer[]> {
+    return this.iS.influencers();
+  }
+
   @Query(() => Influencer)
   @UseGuards(InfluencerGuard)
   async loggedInInfluencer(@CurrentEntity() entity: any): Promise<Influencer> {

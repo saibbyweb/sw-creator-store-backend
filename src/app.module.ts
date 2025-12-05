@@ -10,6 +10,7 @@ import { StoreModule } from './store/store.module';
 import { ProductModule } from './product/product.module';
 import { CoreAuthModule } from './auth/core-auth.module';
 import { AuthModule } from './auth/auth.module';
+import { GoogleModule } from './google/google.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AuthModule } from './auth/auth.module';
     InfluencerModule,
     StoreModule,
     ProductModule,
+    GoogleModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

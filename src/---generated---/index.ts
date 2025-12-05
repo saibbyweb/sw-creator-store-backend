@@ -139,6 +139,10 @@ export enum InfluencerScalarFieldEnum {
     detailsSubmitted = "detailsSubmitted",
     stripeAccountId = "stripeAccountId",
     stripeAccountType = "stripeAccountType",
+    googleCalendarConnected = "googleCalendarConnected",
+    googleAccessToken = "googleAccessToken",
+    googleRefreshToken = "googleRefreshToken",
+    googleTokenExpiry = "googleTokenExpiry",
     displayName = "displayName",
     bio = "bio",
     profilePicture = "profilePicture",
@@ -396,6 +400,14 @@ export class InfluencerCountOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     stripeAccountType?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
+    googleCalendarConnected?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleAccessToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleRefreshToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleTokenExpiry?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
     displayName?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     bio?: `${SortOrder}`;
@@ -443,6 +455,14 @@ export class InfluencerCreateManyInput {
     stripeAccountId?: string;
     @Field(() => String, {nullable:true})
     stripeAccountType?: string;
+    @Field(() => Boolean, {nullable:true})
+    googleCalendarConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    googleAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    googleRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    googleTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -560,6 +580,14 @@ export class InfluencerCreateWithoutMediaInput {
     stripeAccountId?: string;
     @Field(() => String, {nullable:true})
     stripeAccountType?: string;
+    @Field(() => Boolean, {nullable:true})
+    googleCalendarConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    googleAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    googleRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    googleTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -612,6 +640,14 @@ export class InfluencerCreateWithoutSessionsInput {
     stripeAccountId?: string;
     @Field(() => String, {nullable:true})
     stripeAccountType?: string;
+    @Field(() => Boolean, {nullable:true})
+    googleCalendarConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    googleAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    googleRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    googleTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -664,6 +700,14 @@ export class InfluencerCreateWithoutStoresInput {
     stripeAccountId?: string;
     @Field(() => String, {nullable:true})
     stripeAccountType?: string;
+    @Field(() => Boolean, {nullable:true})
+    googleCalendarConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    googleAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    googleRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    googleTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -716,6 +760,14 @@ export class InfluencerCreateInput {
     stripeAccountId?: string;
     @Field(() => String, {nullable:true})
     stripeAccountType?: string;
+    @Field(() => Boolean, {nullable:true})
+    googleCalendarConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    googleAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    googleRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    googleTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -784,6 +836,14 @@ export class InfluencerMaxOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     stripeAccountType?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
+    googleCalendarConnected?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleAccessToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleRefreshToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleTokenExpiry?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
     displayName?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     bio?: `${SortOrder}`;
@@ -827,6 +887,14 @@ export class InfluencerMinOrderByAggregateInput {
     stripeAccountId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     stripeAccountType?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleCalendarConnected?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleAccessToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleRefreshToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleTokenExpiry?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     displayName?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -879,6 +947,14 @@ export class InfluencerOrderByWithAggregationInput {
     stripeAccountId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     stripeAccountType?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleCalendarConnected?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleAccessToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleRefreshToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleTokenExpiry?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     displayName?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -933,6 +1009,14 @@ export class InfluencerOrderByWithRelationInput {
     stripeAccountId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     stripeAccountType?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleCalendarConnected?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleAccessToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleRefreshToken?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    googleTokenExpiry?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     displayName?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -997,6 +1081,14 @@ export class InfluencerScalarWhereWithAggregatesInput {
     stripeAccountId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     stripeAccountType?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    googleAccessToken?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     displayName?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
@@ -1045,6 +1137,14 @@ export class InfluencerUncheckedCreateWithoutMediaInput {
     stripeAccountId?: string;
     @Field(() => String, {nullable:true})
     stripeAccountType?: string;
+    @Field(() => Boolean, {nullable:true})
+    googleCalendarConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    googleAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    googleRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    googleTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -1097,6 +1197,14 @@ export class InfluencerUncheckedCreateWithoutSessionsInput {
     stripeAccountId?: string;
     @Field(() => String, {nullable:true})
     stripeAccountType?: string;
+    @Field(() => Boolean, {nullable:true})
+    googleCalendarConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    googleAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    googleRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    googleTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -1149,6 +1257,14 @@ export class InfluencerUncheckedCreateWithoutStoresInput {
     stripeAccountId?: string;
     @Field(() => String, {nullable:true})
     stripeAccountType?: string;
+    @Field(() => Boolean, {nullable:true})
+    googleCalendarConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    googleAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    googleRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    googleTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -1201,6 +1317,14 @@ export class InfluencerUncheckedCreateInput {
     stripeAccountId?: string;
     @Field(() => String, {nullable:true})
     stripeAccountType?: string;
+    @Field(() => Boolean, {nullable:true})
+    googleCalendarConnected?: boolean;
+    @Field(() => String, {nullable:true})
+    googleAccessToken?: string;
+    @Field(() => String, {nullable:true})
+    googleRefreshToken?: string;
+    @Field(() => Date, {nullable:true})
+    googleTokenExpiry?: Date | string;
     @Field(() => String, {nullable:true})
     displayName?: string;
     @Field(() => String, {nullable:true})
@@ -1253,6 +1377,14 @@ export class InfluencerUncheckedUpdateManyInput {
     stripeAccountId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     stripeAccountType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1299,6 +1431,14 @@ export class InfluencerUncheckedUpdateWithoutMediaInput {
     stripeAccountId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     stripeAccountType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1349,6 +1489,14 @@ export class InfluencerUncheckedUpdateWithoutSessionsInput {
     stripeAccountId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     stripeAccountType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1399,6 +1547,14 @@ export class InfluencerUncheckedUpdateWithoutStoresInput {
     stripeAccountId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     stripeAccountType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1449,6 +1605,14 @@ export class InfluencerUncheckedUpdateInput {
     stripeAccountId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     stripeAccountType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1501,6 +1665,14 @@ export class InfluencerUpdateManyMutationInput {
     stripeAccountId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     stripeAccountType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1639,6 +1811,14 @@ export class InfluencerUpdateWithoutMediaInput {
     stripeAccountId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     stripeAccountType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1689,6 +1869,14 @@ export class InfluencerUpdateWithoutSessionsInput {
     stripeAccountId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     stripeAccountType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1739,6 +1927,14 @@ export class InfluencerUpdateWithoutStoresInput {
     stripeAccountId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     stripeAccountType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1789,6 +1985,14 @@ export class InfluencerUpdateInput {
     stripeAccountId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     stripeAccountType?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleAccessToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     displayName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
@@ -1888,6 +2092,14 @@ export class InfluencerWhereUniqueInput {
     detailsSubmitted?: InstanceType<typeof BoolFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     stripeAccountType?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    googleAccessToken?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     displayName?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
@@ -1948,6 +2160,14 @@ export class InfluencerWhereInput {
     stripeAccountId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     stripeAccountType?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => BoolFilter, {nullable:true})
+    googleCalendarConnected?: InstanceType<typeof BoolFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    googleAccessToken?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    googleRefreshToken?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    googleTokenExpiry?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     displayName?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
@@ -2002,6 +2222,14 @@ export class Influencer {
     stripeAccountId!: string | null;
     @Field(() => String, {nullable:true})
     stripeAccountType!: string | null;
+    @Field(() => Boolean, {defaultValue:false,nullable:false})
+    googleCalendarConnected!: boolean;
+    @Field(() => String, {nullable:true})
+    googleAccessToken!: string | null;
+    @Field(() => String, {nullable:true})
+    googleRefreshToken!: string | null;
+    @Field(() => Date, {nullable:true})
+    googleTokenExpiry!: Date | null;
     @Field(() => String, {nullable:true})
     displayName!: string | null;
     @Field(() => String, {nullable:true})
