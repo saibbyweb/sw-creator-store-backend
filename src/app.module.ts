@@ -11,6 +11,7 @@ import { ProductModule } from './product/product.module';
 import { CoreAuthModule } from './auth/core-auth.module';
 import { AuthModule } from './auth/auth.module';
 import { GoogleModule } from './google/google.module';
+import { ZoomModule } from './zoom/zoom.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { GoogleModule } from './google/google.module';
     StoreModule,
     ProductModule,
     GoogleModule,
+    ZoomModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

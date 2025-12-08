@@ -1,6 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
 import axios from 'axios';
+import {
+  ConnectZoomIntegrationInput,
+  ConnectZoomIntegrationResponse,
+  InitiateZoomIntegrationResponse,
+} from './zoom.dto';
 
 @Injectable()
 export class ZoomAuthService {
@@ -20,24 +25,27 @@ export class ZoomAuthService {
     }
   }
 
-  getAuthUrl() {
+  async getAuthUrl(): Promise<InitiateZoomIntegrationResponse> {
     const baseUrl = 'https://zoom.us/oauth/authorize';
     const params = new URLSearchParams({
       response_type: 'code',
       client_id: this.clientId,
       redirect_uri: this.redirectUri,
     });
-    return `${baseUrl}?${params.toString()}`;
+    return { authUrl: `${baseUrl}?${params.toString()}` };
   }
 
-  async handleCallback(code: string, influencerId: string) {
+  async handleCallback(
+    input: ConnectZoomIntegrationInput,
+    influencerId: string,
+  ): Promise<ConnectZoomIntegrationResponse> {
     try {
       // Add error handling
       const tokenUrl = 'https://zoom.us/oauth/token';
 
       const params = new URLSearchParams({
         grant_type: 'authorization_code',
-        code,
+        code: input.code,
         redirect_uri: this.redirectUri,
       });
 
