@@ -12,6 +12,7 @@ import { CoreAuthModule } from './auth/core-auth.module';
 import { AuthModule } from './auth/auth.module';
 import { GoogleModule } from './google/google.module';
 import { ZoomModule } from './zoom/zoom.module';
+import { S3Module } from './s3/s3.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ZoomModule } from './zoom/zoom.module';
     DbModule,
     CoreAuthModule,
     AuthModule,
+    S3Module,
     InfluencerModule,
     StoreModule,
     ProductModule,
