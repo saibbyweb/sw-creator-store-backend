@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { GoogleModule } from './google/google.module';
 import { ZoomModule } from './zoom/zoom.module';
 import { S3Module } from './s3/s3.module';
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { S3Module } from './s3/s3.module';
     ProductModule,
     GoogleModule,
     ZoomModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

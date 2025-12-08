@@ -21,3 +21,18 @@ export class GenerateSignedUploadUrlResponse {
   @Field(() => String)
   uploadUrl: string;
 }
+
+@InputType()
+export class GenerateSignedAccessUrlInput {
+  @Field(() => String)
+  key: string;
+
+  @Field(() => Number, { nullable: true, defaultValue: 3600 })
+  expiresIn?: number;
+}
+
+@ObjectType()
+export class GenerateSignedAccessUrlResponse {
+  @Field(() => String)
+  accessUrl: string;
+}

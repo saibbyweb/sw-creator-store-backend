@@ -1,4 +1,5 @@
 import {
+  GetObjectCommand,
   ListBucketsCommand,
   PutObjectCommand,
   S3Client,
@@ -8,6 +9,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
 import {
   ContentTypeMap,
+  GenerateSignedAccessUrlInput,
+  GenerateSignedAccessUrlResponse,
   GenerateSignedUploadUrlInput,
   GenerateSignedUploadUrlResponse,
 } from './s3.dto';
@@ -58,7 +61,7 @@ export class S3Service {
 
       // Generate unique key using UUID
       const ext = input.extension.toLowerCase().replace('.', '');
-      const key = `creator-dashboard/${uuidv4()}.${ext}`;
+      const key = `saibbyweb/creator-dashboard/${uuidv4()}.${ext}`;
 
       const command = new PutObjectCommand({
         Bucket: this.bucketName,
@@ -77,6 +80,28 @@ export class S3Service {
     } catch (error) {
       this.logger.error(`Failed to generate upload URL: ${error.message}`);
       throw new Error(`Failed to generate upload URL: ${error.message}`);
+    }
+  }
+
+  async generateSignedAccessUrl(
+    input: GenerateSignedAccessUrlInput,
+  ): Promise<GenerateSignedAccessUrlResponse> {
+    try {
+      const command = new GetObjectCommand({
+        Bucket: this.bucketName,
+        Key: input.key,
+      });
+
+      const signedUrl = await getSignedUrl(this.s3Client, command, {
+        expiresIn: this.expiresIn,
+      });
+
+      return {
+        accessUrl: signedUrl,
+      };
+    } catch (error) {
+      this.logger.error(`Failed to generate access URL: ${error.message}`);
+      throw new Error(`Failed to generate access URL: ${error.message}`);
     }
   }
 

@@ -108,6 +108,12 @@ export enum MediaType {
     OTHER = "OTHER"
 }
 
+export enum MediaPrivacy {
+    PUBLIC = "PUBLIC",
+    PRIVATE = "PRIVATE",
+    SUBSCRIBERS_ONLY = "SUBSCRIBERS_ONLY"
+}
+
 export enum Font {
     MONTSERRAT = "MONTSERRAT",
     ROBOTO = "ROBOTO",
@@ -116,9 +122,10 @@ export enum Font {
 
 export enum MediaScalarFieldEnum {
     id = "id",
-    url = "url",
+    key = "key",
     type = "type",
     influencerId = "influencerId",
+    privacy = "privacy",
     deletedAt = "deletedAt",
     createdAt = "createdAt",
     updatedAt = "updatedAt"
@@ -158,6 +165,7 @@ export enum InfluencerScalarFieldEnum {
 registerEnumType(InfluencerScalarFieldEnum, { name: 'InfluencerScalarFieldEnum', description: undefined })
 registerEnumType(MediaScalarFieldEnum, { name: 'MediaScalarFieldEnum', description: undefined })
 registerEnumType(Font, { name: 'Font', description: undefined })
+registerEnumType(MediaPrivacy, { name: 'MediaPrivacy', description: undefined })
 registerEnumType(MediaType, { name: 'MediaType', description: undefined })
 registerEnumType(ProductStyle, { name: 'ProductStyle', description: undefined })
 registerEnumType(ProductType, { name: 'ProductType', description: undefined })
@@ -2628,11 +2636,13 @@ export class MediaCountOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
+    key?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     type?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     influencerId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    privacy?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     deletedAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -2653,9 +2663,11 @@ export class MediaCreateManyInfluencerInput {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => String, {nullable:false})
-    url!: string;
+    key!: string;
     @Field(() => MediaType, {nullable:false})
     type!: `${MediaType}`;
+    @Field(() => MediaPrivacy, {nullable:true})
+    privacy?: `${MediaPrivacy}`;
     @Field(() => Date, {nullable:true})
     deletedAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -2669,11 +2681,13 @@ export class MediaCreateManyInput {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => String, {nullable:false})
-    url!: string;
+    key!: string;
     @Field(() => MediaType, {nullable:false})
     type!: `${MediaType}`;
     @Field(() => String, {nullable:false})
     influencerId!: string;
+    @Field(() => MediaPrivacy, {nullable:true})
+    privacy?: `${MediaPrivacy}`;
     @Field(() => Date, {nullable:true})
     deletedAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -2736,9 +2750,11 @@ export class MediaCreateWithoutInfluencerInput {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => String, {nullable:false})
-    url!: string;
+    key!: string;
     @Field(() => MediaType, {nullable:false})
     type!: `${MediaType}`;
+    @Field(() => MediaPrivacy, {nullable:true})
+    privacy?: `${MediaPrivacy}`;
     @Field(() => Date, {nullable:true})
     deletedAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -2754,9 +2770,11 @@ export class MediaCreateWithoutProductsInput {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => String, {nullable:false})
-    url!: string;
+    key!: string;
     @Field(() => MediaType, {nullable:false})
     type!: `${MediaType}`;
+    @Field(() => MediaPrivacy, {nullable:true})
+    privacy?: `${MediaPrivacy}`;
     @Field(() => Date, {nullable:true})
     deletedAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -2772,9 +2790,11 @@ export class MediaCreateInput {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => String, {nullable:false})
-    url!: string;
+    key!: string;
     @Field(() => MediaType, {nullable:false})
     type!: `${MediaType}`;
+    @Field(() => MediaPrivacy, {nullable:true})
+    privacy?: `${MediaPrivacy}`;
     @Field(() => Date, {nullable:true})
     deletedAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -2819,11 +2839,13 @@ export class MediaMaxOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
+    key?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     type?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     influencerId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    privacy?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     deletedAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -2837,11 +2859,13 @@ export class MediaMinOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
+    key?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     type?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     influencerId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    privacy?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     deletedAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -2869,11 +2893,13 @@ export class MediaOrderByWithAggregationInput {
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
+    key?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     type?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     influencerId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    privacy?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     deletedAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -2893,11 +2919,13 @@ export class MediaOrderByWithRelationInput {
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
-    url?: `${SortOrder}`;
+    key?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     type?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     influencerId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    privacy?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     deletedAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -2921,11 +2949,13 @@ export class MediaScalarWhereWithAggregatesInput {
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     id?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
-    url?: InstanceType<typeof StringWithAggregatesFilter>;
+    key?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => EnumMediaTypeWithAggregatesFilter, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     influencerId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => EnumMediaPrivacyWithAggregatesFilter, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyWithAggregatesFilter>;
     @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
     deletedAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
     @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
@@ -2945,11 +2975,13 @@ export class MediaScalarWhereInput {
     @Field(() => StringFilter, {nullable:true})
     id?: InstanceType<typeof StringFilter>;
     @Field(() => StringFilter, {nullable:true})
-    url?: InstanceType<typeof StringFilter>;
+    key?: InstanceType<typeof StringFilter>;
     @Field(() => EnumMediaTypeFilter, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeFilter>;
     @Field(() => StringFilter, {nullable:true})
     influencerId?: InstanceType<typeof StringFilter>;
+    @Field(() => EnumMediaPrivacyFilter, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
     deletedAt?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
@@ -2979,9 +3011,11 @@ export class MediaUncheckedCreateWithoutInfluencerInput {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => String, {nullable:false})
-    url!: string;
+    key!: string;
     @Field(() => MediaType, {nullable:false})
     type!: `${MediaType}`;
+    @Field(() => MediaPrivacy, {nullable:true})
+    privacy?: `${MediaPrivacy}`;
     @Field(() => Date, {nullable:true})
     deletedAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -2997,11 +3031,13 @@ export class MediaUncheckedCreateWithoutProductsInput {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => String, {nullable:false})
-    url!: string;
+    key!: string;
     @Field(() => MediaType, {nullable:false})
     type!: `${MediaType}`;
     @Field(() => String, {nullable:false})
     influencerId!: string;
+    @Field(() => MediaPrivacy, {nullable:true})
+    privacy?: `${MediaPrivacy}`;
     @Field(() => Date, {nullable:true})
     deletedAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -3015,11 +3051,13 @@ export class MediaUncheckedCreateInput {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => String, {nullable:false})
-    url!: string;
+    key!: string;
     @Field(() => MediaType, {nullable:false})
     type!: `${MediaType}`;
     @Field(() => String, {nullable:false})
     influencerId!: string;
+    @Field(() => MediaPrivacy, {nullable:true})
+    privacy?: `${MediaPrivacy}`;
     @Field(() => Date, {nullable:true})
     deletedAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -3070,9 +3108,11 @@ export class MediaUncheckedUpdateManyWithoutInfluencerNestedInput {
 @InputType()
 export class MediaUncheckedUpdateManyWithoutInfluencerInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EnumMediaTypeFieldUpdateOperationsInput, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeFieldUpdateOperationsInput>;
+    @Field(() => EnumMediaPrivacyFieldUpdateOperationsInput, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -3084,11 +3124,13 @@ export class MediaUncheckedUpdateManyWithoutInfluencerInput {
 @InputType()
 export class MediaUncheckedUpdateManyInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EnumMediaTypeFieldUpdateOperationsInput, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     influencerId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumMediaPrivacyFieldUpdateOperationsInput, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -3100,9 +3142,11 @@ export class MediaUncheckedUpdateManyInput {
 @InputType()
 export class MediaUncheckedUpdateWithoutInfluencerInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EnumMediaTypeFieldUpdateOperationsInput, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeFieldUpdateOperationsInput>;
+    @Field(() => EnumMediaPrivacyFieldUpdateOperationsInput, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -3116,11 +3160,13 @@ export class MediaUncheckedUpdateWithoutInfluencerInput {
 @InputType()
 export class MediaUncheckedUpdateWithoutProductsInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EnumMediaTypeFieldUpdateOperationsInput, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     influencerId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumMediaPrivacyFieldUpdateOperationsInput, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -3132,11 +3178,13 @@ export class MediaUncheckedUpdateWithoutProductsInput {
 @InputType()
 export class MediaUncheckedUpdateInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EnumMediaTypeFieldUpdateOperationsInput, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     influencerId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => EnumMediaPrivacyFieldUpdateOperationsInput, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -3150,9 +3198,11 @@ export class MediaUncheckedUpdateInput {
 @InputType()
 export class MediaUpdateManyMutationInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EnumMediaTypeFieldUpdateOperationsInput, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeFieldUpdateOperationsInput>;
+    @Field(() => EnumMediaPrivacyFieldUpdateOperationsInput, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -3255,9 +3305,11 @@ export class MediaUpdateWithWhereUniqueWithoutInfluencerInput {
 @InputType()
 export class MediaUpdateWithoutInfluencerInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EnumMediaTypeFieldUpdateOperationsInput, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeFieldUpdateOperationsInput>;
+    @Field(() => EnumMediaPrivacyFieldUpdateOperationsInput, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -3271,9 +3323,11 @@ export class MediaUpdateWithoutInfluencerInput {
 @InputType()
 export class MediaUpdateWithoutProductsInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EnumMediaTypeFieldUpdateOperationsInput, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeFieldUpdateOperationsInput>;
+    @Field(() => EnumMediaPrivacyFieldUpdateOperationsInput, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -3287,9 +3341,11 @@ export class MediaUpdateWithoutProductsInput {
 @InputType()
 export class MediaUpdateInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    url?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    key?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EnumMediaTypeFieldUpdateOperationsInput, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeFieldUpdateOperationsInput>;
+    @Field(() => EnumMediaPrivacyFieldUpdateOperationsInput, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -3339,11 +3395,13 @@ export class MediaWhereUniqueInput {
     @Field(() => [MediaWhereInput], {nullable:true})
     NOT?: Array<MediaWhereInput>;
     @Field(() => StringFilter, {nullable:true})
-    url?: InstanceType<typeof StringFilter>;
+    key?: InstanceType<typeof StringFilter>;
     @Field(() => EnumMediaTypeFilter, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeFilter>;
     @Field(() => StringFilter, {nullable:true})
     influencerId?: InstanceType<typeof StringFilter>;
+    @Field(() => EnumMediaPrivacyFilter, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
     deletedAt?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
@@ -3367,11 +3425,13 @@ export class MediaWhereInput {
     @Field(() => StringFilter, {nullable:true})
     id?: InstanceType<typeof StringFilter>;
     @Field(() => StringFilter, {nullable:true})
-    url?: InstanceType<typeof StringFilter>;
+    key?: InstanceType<typeof StringFilter>;
     @Field(() => EnumMediaTypeFilter, {nullable:true})
     type?: InstanceType<typeof EnumMediaTypeFilter>;
     @Field(() => StringFilter, {nullable:true})
     influencerId?: InstanceType<typeof StringFilter>;
+    @Field(() => EnumMediaPrivacyFilter, {nullable:true})
+    privacy?: InstanceType<typeof EnumMediaPrivacyFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
     deletedAt?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
@@ -3389,11 +3449,13 @@ export class Media {
     @Field(() => ID, {nullable:false})
     id!: string;
     @Field(() => String, {nullable:false})
-    url!: string;
+    key!: string;
     @Field(() => MediaType, {nullable:false})
     type!: `${MediaType}`;
     @Field(() => String, {nullable:false})
     influencerId!: string;
+    @Field(() => MediaPrivacy, {defaultValue:'PUBLIC',nullable:false})
+    privacy!: `${MediaPrivacy}`;
     @Field(() => Date, {nullable:true})
     deletedAt!: Date | null;
     @Field(() => Date, {nullable:false})
@@ -3669,6 +3731,42 @@ export class EnumFontWithAggregatesFilter {
     _min?: InstanceType<typeof NestedEnumFontFilter>;
     @Field(() => NestedEnumFontFilter, {nullable:true})
     _max?: InstanceType<typeof NestedEnumFontFilter>;
+}
+
+@InputType()
+export class EnumMediaPrivacyFieldUpdateOperationsInput {
+    @Field(() => MediaPrivacy, {nullable:true})
+    set?: `${MediaPrivacy}`;
+}
+
+@InputType()
+export class EnumMediaPrivacyFilter {
+    @Field(() => MediaPrivacy, {nullable:true})
+    equals?: `${MediaPrivacy}`;
+    @Field(() => [MediaPrivacy], {nullable:true})
+    in?: Array<`${MediaPrivacy}`>;
+    @Field(() => [MediaPrivacy], {nullable:true})
+    notIn?: Array<`${MediaPrivacy}`>;
+    @Field(() => NestedEnumMediaPrivacyFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumMediaPrivacyFilter>;
+}
+
+@InputType()
+export class EnumMediaPrivacyWithAggregatesFilter {
+    @Field(() => MediaPrivacy, {nullable:true})
+    equals?: `${MediaPrivacy}`;
+    @Field(() => [MediaPrivacy], {nullable:true})
+    in?: Array<`${MediaPrivacy}`>;
+    @Field(() => [MediaPrivacy], {nullable:true})
+    notIn?: Array<`${MediaPrivacy}`>;
+    @Field(() => NestedEnumMediaPrivacyWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumMediaPrivacyWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumMediaPrivacyFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumMediaPrivacyFilter>;
+    @Field(() => NestedEnumMediaPrivacyFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumMediaPrivacyFilter>;
 }
 
 @InputType()
@@ -4119,6 +4217,36 @@ export class NestedEnumFontWithAggregatesFilter {
     _min?: InstanceType<typeof NestedEnumFontFilter>;
     @Field(() => NestedEnumFontFilter, {nullable:true})
     _max?: InstanceType<typeof NestedEnumFontFilter>;
+}
+
+@InputType()
+export class NestedEnumMediaPrivacyFilter {
+    @Field(() => MediaPrivacy, {nullable:true})
+    equals?: `${MediaPrivacy}`;
+    @Field(() => [MediaPrivacy], {nullable:true})
+    in?: Array<`${MediaPrivacy}`>;
+    @Field(() => [MediaPrivacy], {nullable:true})
+    notIn?: Array<`${MediaPrivacy}`>;
+    @Field(() => NestedEnumMediaPrivacyFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumMediaPrivacyFilter>;
+}
+
+@InputType()
+export class NestedEnumMediaPrivacyWithAggregatesFilter {
+    @Field(() => MediaPrivacy, {nullable:true})
+    equals?: `${MediaPrivacy}`;
+    @Field(() => [MediaPrivacy], {nullable:true})
+    in?: Array<`${MediaPrivacy}`>;
+    @Field(() => [MediaPrivacy], {nullable:true})
+    notIn?: Array<`${MediaPrivacy}`>;
+    @Field(() => NestedEnumMediaPrivacyWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumMediaPrivacyWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumMediaPrivacyFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumMediaPrivacyFilter>;
+    @Field(() => NestedEnumMediaPrivacyFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumMediaPrivacyFilter>;
 }
 
 @InputType()

@@ -188,12 +188,19 @@ enum MediaType {
   OTHER
 }
 
+enum MediaPrivacy {
+  PUBLIC
+  PRIVATE
+  SUBSCRIBERS_ONLY
+}
+
 model Media {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  url          String
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  key          String
   type         MediaType
-  influencerId String     @db.ObjectId
-  influencer   Influencer @relation(fields: [influencerId], references: [id])
+  influencerId String       @db.ObjectId
+  influencer   Influencer   @relation(fields: [influencerId], references: [id])
+  privacy      MediaPrivacy @default(PUBLIC)
 
   deletedAt DateTime?
   createdAt DateTime  @default(now())
