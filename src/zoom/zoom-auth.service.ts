@@ -25,7 +25,7 @@ export class ZoomAuthService {
     }
   }
 
-  async getAuthUrl(): Promise<InitiateZoomIntegrationResponse> {
+  async initiateZoomIntegration(): Promise<InitiateZoomIntegrationResponse> {
     const baseUrl = 'https://zoom.us/oauth/authorize';
     const params = new URLSearchParams({
       response_type: 'code',

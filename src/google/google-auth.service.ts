@@ -2,23 +2,23 @@ import { Injectable, Logger } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
 import { google } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library';
-import { ConnectGoogleCalendarInput } from './google-calendar.dto';
 
 @Injectable()
 export class GoogleAuthService {
   private readonly logger: Logger;
-  private readonly redirectUri: string;
   private readonly clientId: string;
   private readonly clientSecret: string;
   private readonly googleOAuth2: OAuth2Client;
+  private redirectUri: string;
 
   constructor(private readonly db: DbService) {
     this.logger = new Logger(GoogleAuthService.name);
-    this.redirectUri = process.env.GOOGLE_REDIRECT_URI!;
+
     this.clientId = process.env.GOOGLE_CLIENT_ID!;
     this.clientSecret = process.env.GOOGLE_CLIENT_SECRET!;
+    this.redirectUri = process.env.GOOGLE_REDIRECT_URI!;
 
-    if (!this.redirectUri || !this.clientId || !this.clientSecret) {
+    if (!this.clientId || !this.clientSecret || !this.redirectUri) {
       this.logger.error('Google credentials are not set');
     }
 
@@ -29,19 +29,25 @@ export class GoogleAuthService {
     });
   }
 
-  getAuthUrl() {
+  initiateGoogleCalendarIntegration(influencerId: string) {
+    const state = Buffer.from(
+      JSON.stringify({
+        influencerId,
+        type: 'calendar-callback',
+        timestamp: Date.now(),
+      }),
+    ).toString('base64');
+
     return this.googleOAuth2.generateAuthUrl({
       access_type: 'offline',
       scope: ['https://www.googleapis.com/auth/calendar'],
       prompt: 'consent',
+      state,
     });
   }
 
-  async handleCallback(
-    input: ConnectGoogleCalendarInput,
-    influencerId: string,
-  ) {
-    const { tokens } = await this.googleOAuth2.getToken(input.code);
+  async connectGoogleCalendar(code: string, influencerId: string) {
+    const { tokens } = await this.googleOAuth2.getToken({ code });
 
     if (!tokens.access_token || !tokens.refresh_token || !tokens.expiry_date) {
       throw new Error('Failed to get tokens');

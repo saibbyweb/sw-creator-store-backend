@@ -86,9 +86,3 @@ export class CreateEventInput {
   @Field(() => [String], { nullable: true })
   attendees?: string[];
 }
-
-@InputType()
-export class ConnectGoogleCalendarInput {
-  @Field(() => String)
-  code: string;
-}

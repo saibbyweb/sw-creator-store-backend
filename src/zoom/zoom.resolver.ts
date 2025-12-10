@@ -21,7 +21,7 @@ export class ZoomMeetingResolver {
 
   @Query(() => InitiateZoomIntegrationResponse)
   async initiateZoomIntegration() {
-    return this.zoomAuthService.getAuthUrl();
+    return this.zoomAuthService.initiateZoomIntegration();
   }
 
   @Mutation(() => CreateMeetingResponse)
