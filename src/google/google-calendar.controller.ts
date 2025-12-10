@@ -14,10 +14,8 @@ export class GoogleController {
     @Res() res: Response,
   ) {
     const sendHtml = (success: boolean) => {
-      return res
-        .status(200)
-
-        .send(this.getCallbackHTML(success));
+      res.type('html');
+      return res.status(200).send(this.getCallbackHTML(success));
     };
 
     try {

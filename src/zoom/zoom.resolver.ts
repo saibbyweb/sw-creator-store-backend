@@ -3,8 +3,6 @@ import { ZoomAuthService } from './zoom-auth.service';
 import { CurrentEntity, InfluencerGuard } from 'src/auth';
 import { UseGuards } from '@nestjs/common';
 import {
-  ConnectZoomIntegrationInput,
-  ConnectZoomIntegrationResponse,
   CreateMeetingInput,
   CreateMeetingResponse,
   InitiateZoomIntegrationResponse,
@@ -19,9 +17,10 @@ export class ZoomMeetingResolver {
     private readonly zoomMeetingService: ZoomMeetingService,
   ) {}
 
-  @Query(() => InitiateZoomIntegrationResponse)
-  async initiateZoomIntegration() {
-    return this.zoomAuthService.initiateZoomIntegration();
+  @Mutation(() => InitiateZoomIntegrationResponse)
+  @UseGuards(InfluencerGuard)
+  async initiateZoomIntegration(@CurrentEntity() entity: any) {
+    return this.zoomAuthService.initiateZoomIntegration(entity.entityId);
   }
 
   @Mutation(() => CreateMeetingResponse)
@@ -31,15 +30,6 @@ export class ZoomMeetingResolver {
     @Args('input') input: CreateMeetingInput,
   ) {
     return this.zoomMeetingService.createMeeting(entity.entityId, input);
-  }
-
-  @Mutation(() => ConnectZoomIntegrationResponse)
-  @UseGuards(InfluencerGuard)
-  async connectZoomIntegration(
-    @Args('input') input: ConnectZoomIntegrationInput,
-    @CurrentEntity() entity: any,
-  ) {
-    return this.zoomAuthService.handleCallback(input, entity.entityId);
   }
 
   @Query(() => [ZoomMeeting])

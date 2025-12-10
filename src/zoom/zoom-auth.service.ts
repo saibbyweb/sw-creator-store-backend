@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
 import axios from 'axios';
 import {
-  ConnectZoomIntegrationInput,
   ConnectZoomIntegrationResponse,
   InitiateZoomIntegrationResponse,
 } from './zoom.dto';
@@ -25,7 +24,15 @@ export class ZoomAuthService {
     }
   }
 
-  async initiateZoomIntegration(): Promise<InitiateZoomIntegrationResponse> {
+  async initiateZoomIntegration(
+    influencerId: string,
+  ): Promise<InitiateZoomIntegrationResponse> {
+    const state = Buffer.from(
+      JSON.stringify({
+        influencerId,
+      }),
+    ).toString('base64');
+
     const baseUrl = 'https://zoom.us/oauth/authorize';
     const params = new URLSearchParams({
       response_type: 'code',
@@ -33,21 +40,21 @@ export class ZoomAuthService {
       redirect_uri: this.redirectUri,
       scope:
         'meeting:write:meeting meeting:read:meeting meeting:read:list_meetings user:read:user',
+      state,
     });
     return { authUrl: `${baseUrl}?${params.toString()}` };
   }
 
-  async handleCallback(
-    input: ConnectZoomIntegrationInput,
+  async connectZoomAccount(
+    code: string,
     influencerId: string,
   ): Promise<ConnectZoomIntegrationResponse> {
     try {
-      // Add error handling
       const tokenUrl = 'https://zoom.us/oauth/token';
 
       const params = new URLSearchParams({
         grant_type: 'authorization_code',
-        code: input.code,
+        code: code,
         redirect_uri: this.redirectUri,
       });
 
@@ -179,51 +186,4 @@ export class ZoomAuthService {
     this.logger.log(`Zoom disconnected for influencer: ${influencerId}`);
     return true;
   }
-
-  // private async refreshAccessToken(influencerId: string): Promise<string> {
-  //   const influencer = await this.db.influencer.findUnique({
-  //     where: { id: influencerId },
-  //   });
-
-  //   if (!influencer || !influencer.zoomRefreshToken) {
-  //     throw new Error('Cannot refresh token: No refresh token found');
-  //   }
-
-  //   try {
-  //     const tokenUrl = 'https://zoom.us/oauth/token';
-
-  //     const params = new URLSearchParams({
-  //       grant_type: 'refresh_token',
-  //       refresh_token: influencer.zoomRefreshToken,
-  //     });
-
-  //     const response = await axios.post(tokenUrl, params.toString(), {
-  //       headers: {
-  //         'Content-Type': 'application/x-www-form-urlencoded',
-  //         Authorization: `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
-  //       },
-  //     });
-
-  //     const { access_token, refresh_token, expires_in } = response.data;
-
-  //     await this.db.influencer.update({
-  //       where: { id: influencerId },
-  //       data: {
-  //         zoomAccessToken: access_token,
-  //         zoomRefreshToken: refresh_token,
-  //         zoomTokenExpiry: new Date(Date.now() + expires_in * 1000),
-  //       },
-  //     });
-
-  //     this.logger.log(`Token refreshed for influencer: ${influencerId}`);
-  //     return access_token;
-  //   } catch (error) {
-  //     this.logger.error(
-  //       'Token refresh error:',
-  //       error.response?.data || error.message,
-  //     );
-  //     console.log('error', error);
-  //     throw new Error('Failed to refresh Zoom token');
-  //   }
-  // }
 }
