@@ -85,12 +85,16 @@ model Influencer {
   address     Address
   socialLinks SocialLink[]
 
+  // Stripe Payout Details
   stripeOnboardingComplete Boolean @default(false)
   chargesEnabled           Boolean @default(false)
   payoutsEnabled           Boolean @default(false)
   detailsSubmitted         Boolean @default(false)
   stripeAccountId          String? @unique
   stripeAccountType        String?
+
+  //Stripe Payment Details
+  stripeCustomerId String? @unique
 
   // Google Calendar Integration
   googleCalendarConnected Boolean   @default(false)
@@ -112,9 +116,130 @@ model Influencer {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  stores   Store[]
-  media    Media[]
-  sessions Session[]
+  stores                  Store[]
+  media                   Media[]
+  sessions                Session[]
+  paymentMethods          InfluencerPaymentMethod[]
+  influencerPayments      InfluencerPayment[]
+  influencerSubscriptions InfluencerSubscription[]
+}
+
+enum PaymentMethodType {
+  CREDIT_CARD
+  DEBIT_CARD
+  BANK_ACCOUNT
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  INCOMPLETE
+  UNPAID
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum PlanInterval {
+  MONTHLY
+  YEARLY
+}
+
+enum Currency {
+  USD
+  EUR
+  GBP
+}
+
+enum TaxBehaviour {
+  INCLUSIVE
+  EXCLUSIVE
+}
+
+model InflucenerPlan {
+  id                        String       @id @default(auto()) @map("_id") @db.ObjectId
+  name                      String
+  priceInLowestDenomination Int
+  currency                  Currency
+  interval                  PlanInterval
+  stripePriceId             String?      @unique
+  intervalCount             Int
+  taxBehaviour              TaxBehaviour
+  deletedAt                 DateTime?
+  createdAt                 DateTime     @default(now())
+  updatedAt                 DateTime     @updatedAt
+
+  influencerSubscriptions InfluencerSubscription[]
+}
+
+model InfluencerSubscription {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  influencerId String         @db.ObjectId
+  influencer   Influencer     @relation(fields: [influencerId], references: [id])
+  planId       String         @db.ObjectId
+  plan         InflucenerPlan @relation(fields: [planId], references: [id])
+
+  stripeSubscriptionId String?            @unique
+  status               SubscriptionStatus
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  cancelAt             DateTime?
+  cancelAtPeriodEnd    Boolean            @default(false)
+  active               Boolean            @default(true)
+
+  defaultPaymentMethodId String? @db.ObjectId
+
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  influencerPayments InfluencerPayment[]
+
+  @@index([influencerId])
+  @@index([planId])
+}
+
+model InfluencerPaymentMethod {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  last4        String?
+  brand        String?
+  country      String?
+  funding      String?
+  expMonth     Int?
+  expYear      Int?
+  influencerId String     @db.ObjectId
+  influencer   Influencer @relation(fields: [influencerId], references: [id])
+
+  stripePaymentMethodId String? @unique
+  default               Boolean @default(false)
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([influencerId])
+}
+
+model InfluencerPayment {
+  id             String                  @id @default(auto()) @map("_id") @db.ObjectId
+  influencerId   String                  @db.ObjectId
+  influencer     Influencer              @relation(fields: [influencerId], references: [id])
+  subscriptionId String?                 @db.ObjectId
+  subscription   InfluencerSubscription? @relation(fields: [subscriptionId], references: [id])
+
+  amountInLowestDenomination Int
+  currency                   Currency
+  stripePaymentIntentId      String?       @unique
+  stripeChargeId             String?       @unique
+  stripeRefundId             String?       @unique
+  status                     PaymentStatus
+  createdAt                  DateTime      @default(now())
+  updatedAt                  DateTime      @updatedAt
+
+  @@index([influencerId])
 }
 
 enum ProductStyle {

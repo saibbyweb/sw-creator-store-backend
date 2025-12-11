@@ -14,6 +14,8 @@ import { GoogleModule } from './google/google.module';
 import { ZoomModule } from './zoom/zoom.module';
 import { S3Module } from './s3/s3.module';
 import { MediaModule } from './media/media.module';
+import { PaymentMethodModule } from './payment-method/payment-method.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { MediaModule } from './media/media.module';
     GoogleModule,
     ZoomModule,
     MediaModule,
+    PaymentMethodModule,
+    StripeModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

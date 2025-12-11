@@ -80,7 +80,7 @@ export class StripeService {
       return {
         onboardingLink: stripeConnectAccountLink.url,
       };
-    } catch (error) {
+    } catch {
       this.logger.error('Failed to generate Stripe onboarding link');
       throw new Error('Failed to generate Stripe onboarding link');
     }
@@ -118,6 +118,18 @@ export class StripeService {
     } catch {
       this.logger.error('Failed to check Stripe onboarding status');
       throw new Error('Failed to check Stripe onboarding status');
+    }
+  }
+
+  async detachPaymentMethodFromStripe(stripePaymentMethodId: string) {
+    try {
+      console.log(stripePaymentMethodId);
+      await this.stripe.paymentMethods.detach(stripePaymentMethodId);
+      return true;
+    } catch (error) {
+      console.log(error);
+      this.logger.error('Failed to detach payment method from Stripe');
+      throw new Error('Failed to detach payment method from Stripe');
     }
   }
 }
