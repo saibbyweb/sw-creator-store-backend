@@ -7,8 +7,19 @@ if (!moduleName) {
   process.exit(1);
 }
 
-// Capitalize first letter for class names
-const className = moduleName.charAt(0).toUpperCase() + moduleName.slice(1);
+// Convert kebab-case to PascalCase for class names
+const className = moduleName
+  .split('-')
+  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  .join('');
+
+// Convert kebab-case to camelCase for variable names
+const variableName = moduleName
+  .split('-')
+  .map((word, index) =>
+    index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1),
+  )
+  .join('');
 
 const moduleDir = path.join('src', moduleName);
 fs.mkdirSync(moduleDir, { recursive: true });
@@ -32,7 +43,7 @@ import { ${className}Service } from './${moduleName}.service';
 
 @Resolver()
 export class ${className}Resolver {
-  constructor(private readonly ${moduleName}Service: ${className}Service) {}
+  constructor(private readonly ${variableName}Service: ${className}Service) {}
 }
 `;
 

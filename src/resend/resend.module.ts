@@ -1,9 +1,13 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ResendService } from './resend.service';
 import { ResendResolver } from './resend.resolver';
+import { CommunicationLogModule } from 'src/communication-log/communication-log.module';
+import { EmailConstructorService } from './emails/email-constructor.service';
 
+@Global()
 @Module({
-  providers: [ResendService, ResendResolver],
-  exports: [ResendService],
+  imports: [CommunicationLogModule],
+  providers: [ResendService, ResendResolver, EmailConstructorService],
+  exports: [ResendService, EmailConstructorService],
 })
 export class ResendModule {}
