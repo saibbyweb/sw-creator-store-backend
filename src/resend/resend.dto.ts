@@ -4,3 +4,8 @@ export class SendMailInput {
   subject: string;
   html: string;
 }
+
+export class SendRegistrationEmailInput {
+  to: string;
+  name: string;
+}

@@ -3,11 +3,11 @@ import { InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { ObjectType } from '@nestjs/graphql';
 import { ArgsType } from '@nestjs/graphql';
-import { Int } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
+import { Int } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-type-json';
 import { registerEnumType } from '@nestjs/graphql';
 import { ID } from '@nestjs/graphql';
-import { GraphQLJSON } from 'graphql-type-json';
 import { Float } from '@nestjs/graphql';
 
 export enum StoreScalarFieldEnum {
@@ -89,6 +89,11 @@ export enum SocialPlatform {
     URL = "URL"
 }
 
+export enum SendMode {
+    MANUAL = "MANUAL",
+    AUTOMATIC = "AUTOMATIC"
+}
+
 export enum Role {
     ADMIN = "ADMIN",
     USER = "USER",
@@ -149,6 +154,33 @@ export enum Currency {
     USD = "USD",
     EUR = "EUR",
     GBP = "GBP"
+}
+
+export enum CommunicationType {
+    ACCOUNT_CREATION = "ACCOUNT_CREATION",
+    ACCOUNT_UPDATE = "ACCOUNT_UPDATE",
+    ADVERTISEMENT = "ADVERTISEMENT",
+    SUBSCRIPTION_CREATION = "SUBSCRIPTION_CREATION",
+    SUBSCRIPTION_CANCELLATION = "SUBSCRIPTION_CANCELLATION"
+}
+
+export enum CommunicationStatus {
+    PENDING = "PENDING",
+    SENT = "SENT",
+    FAILED = "FAILED"
+}
+
+export enum CommunicationProvider {
+    TWILIO = "TWILIO",
+    SENDGRID = "SENDGRID",
+    RESEND = "RESEND",
+    MAILGUN = "MAILGUN"
+}
+
+export enum CommunicationMode {
+    EMAIL = "EMAIL",
+    SMS = "SMS",
+    WHATSAPP = "WHATSAPP"
 }
 
 export enum MediaScalarFieldEnum {
@@ -254,12 +286,31 @@ export enum InflucenerPlanScalarFieldEnum {
     updatedAt = "updatedAt"
 }
 
+export enum CommunicationLogScalarFieldEnum {
+    id = "id",
+    recipient = "recipient",
+    content = "content",
+    providerAcknowledgmentId = "providerAcknowledgmentId",
+    status = "status",
+    mode = "mode",
+    sendMode = "sendMode",
+    type = "type",
+    provider = "provider",
+    createdAt = "createdAt",
+    updatedAt = "updatedAt"
+}
+
+registerEnumType(CommunicationLogScalarFieldEnum, { name: 'CommunicationLogScalarFieldEnum', description: undefined })
 registerEnumType(InflucenerPlanScalarFieldEnum, { name: 'InflucenerPlanScalarFieldEnum', description: undefined })
 registerEnumType(InfluencerScalarFieldEnum, { name: 'InfluencerScalarFieldEnum', description: undefined })
 registerEnumType(InfluencerPaymentScalarFieldEnum, { name: 'InfluencerPaymentScalarFieldEnum', description: undefined })
 registerEnumType(InfluencerPaymentMethodScalarFieldEnum, { name: 'InfluencerPaymentMethodScalarFieldEnum', description: undefined })
 registerEnumType(InfluencerSubscriptionScalarFieldEnum, { name: 'InfluencerSubscriptionScalarFieldEnum', description: undefined })
 registerEnumType(MediaScalarFieldEnum, { name: 'MediaScalarFieldEnum', description: undefined })
+registerEnumType(CommunicationMode, { name: 'CommunicationMode', description: undefined })
+registerEnumType(CommunicationProvider, { name: 'CommunicationProvider', description: undefined })
+registerEnumType(CommunicationStatus, { name: 'CommunicationStatus', description: undefined })
+registerEnumType(CommunicationType, { name: 'CommunicationType', description: undefined })
 registerEnumType(Currency, { name: 'Currency', description: undefined })
 registerEnumType(Font, { name: 'Font', description: undefined })
 registerEnumType(MediaPrivacy, { name: 'MediaPrivacy', description: undefined })
@@ -270,6 +321,7 @@ registerEnumType(ProductStyle, { name: 'ProductStyle', description: undefined })
 registerEnumType(ProductType, { name: 'ProductType', description: undefined })
 registerEnumType(QueryMode, { name: 'QueryMode', description: undefined })
 registerEnumType(Role, { name: 'Role', description: undefined })
+registerEnumType(SendMode, { name: 'SendMode', description: undefined })
 registerEnumType(SocialPlatform, { name: 'SocialPlatform', description: undefined })
 registerEnumType(SortOrder, { name: 'SortOrder', description: undefined })
 registerEnumType(StoreDesign, { name: 'StoreDesign', description: undefined })
@@ -370,6 +422,596 @@ export class Address {
     postalCode!: string;
     @Field(() => String, {nullable:false})
     country!: string;
+}
+
+@ArgsType()
+export class CommunicationLogAggregateArgs {
+    @Field(() => CommunicationLogWhereInput, {nullable:true})
+    @Type(() => CommunicationLogWhereInput)
+    where?: InstanceType<typeof CommunicationLogWhereInput>;
+    @Field(() => [CommunicationLogOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<CommunicationLogOrderByWithRelationInput>;
+    @Field(() => CommunicationLogWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<CommunicationLogWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+}
+
+@InputType()
+export class CommunicationLogCountOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    recipient?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    content?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    providerAcknowledgmentId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    mode?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    sendMode?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    provider?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class CommunicationLogCreateManyInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    recipient!: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    content?: any;
+    @Field(() => String, {nullable:true})
+    providerAcknowledgmentId?: string;
+    @Field(() => CommunicationStatus, {nullable:false})
+    status!: `${CommunicationStatus}`;
+    @Field(() => CommunicationMode, {nullable:false})
+    mode!: `${CommunicationMode}`;
+    @Field(() => SendMode, {nullable:false})
+    sendMode!: `${SendMode}`;
+    @Field(() => CommunicationType, {nullable:false})
+    type!: `${CommunicationType}`;
+    @Field(() => CommunicationProvider, {nullable:false})
+    provider!: `${CommunicationProvider}`;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class CommunicationLogCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    recipient!: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    content?: any;
+    @Field(() => String, {nullable:true})
+    providerAcknowledgmentId?: string;
+    @Field(() => CommunicationStatus, {nullable:false})
+    status!: `${CommunicationStatus}`;
+    @Field(() => CommunicationMode, {nullable:false})
+    mode!: `${CommunicationMode}`;
+    @Field(() => SendMode, {nullable:false})
+    sendMode!: `${SendMode}`;
+    @Field(() => CommunicationType, {nullable:false})
+    type!: `${CommunicationType}`;
+    @Field(() => CommunicationProvider, {nullable:false})
+    provider!: `${CommunicationProvider}`;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@ArgsType()
+export class CommunicationLogGroupByArgs {
+    @Field(() => CommunicationLogWhereInput, {nullable:true})
+    @Type(() => CommunicationLogWhereInput)
+    where?: InstanceType<typeof CommunicationLogWhereInput>;
+    @Field(() => [CommunicationLogOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<CommunicationLogOrderByWithAggregationInput>;
+    @Field(() => [CommunicationLogScalarFieldEnum], {nullable:false})
+    by!: Array<`${CommunicationLogScalarFieldEnum}`>;
+    @Field(() => CommunicationLogScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof CommunicationLogScalarWhereWithAggregatesInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+}
+
+@InputType()
+export class CommunicationLogMaxOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    recipient?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    providerAcknowledgmentId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    mode?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    sendMode?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    provider?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class CommunicationLogMinOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    recipient?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    providerAcknowledgmentId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    mode?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    sendMode?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    provider?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class CommunicationLogOrderByWithAggregationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    recipient?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    content?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    providerAcknowledgmentId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    mode?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    sendMode?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    provider?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+    @Field(() => CommunicationLogCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof CommunicationLogCountOrderByAggregateInput>;
+    @Field(() => CommunicationLogMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof CommunicationLogMaxOrderByAggregateInput>;
+    @Field(() => CommunicationLogMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof CommunicationLogMinOrderByAggregateInput>;
+}
+
+@InputType()
+export class CommunicationLogOrderByWithRelationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    recipient?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    content?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    providerAcknowledgmentId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    status?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    mode?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    sendMode?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    type?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    provider?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: `${SortOrder}`;
+}
+
+@InputType()
+export class CommunicationLogScalarWhereWithAggregatesInput {
+    @Field(() => [CommunicationLogScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<CommunicationLogScalarWhereWithAggregatesInput>;
+    @Field(() => [CommunicationLogScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<CommunicationLogScalarWhereWithAggregatesInput>;
+    @Field(() => [CommunicationLogScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<CommunicationLogScalarWhereWithAggregatesInput>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    id?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    recipient?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => JsonNullableWithAggregatesFilter, {nullable:true})
+    content?: InstanceType<typeof JsonNullableWithAggregatesFilter>;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    providerAcknowledgmentId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => EnumCommunicationStatusWithAggregatesFilter, {nullable:true})
+    status?: InstanceType<typeof EnumCommunicationStatusWithAggregatesFilter>;
+    @Field(() => EnumCommunicationModeWithAggregatesFilter, {nullable:true})
+    mode?: InstanceType<typeof EnumCommunicationModeWithAggregatesFilter>;
+    @Field(() => EnumSendModeWithAggregatesFilter, {nullable:true})
+    sendMode?: InstanceType<typeof EnumSendModeWithAggregatesFilter>;
+    @Field(() => EnumCommunicationTypeWithAggregatesFilter, {nullable:true})
+    type?: InstanceType<typeof EnumCommunicationTypeWithAggregatesFilter>;
+    @Field(() => EnumCommunicationProviderWithAggregatesFilter, {nullable:true})
+    provider?: InstanceType<typeof EnumCommunicationProviderWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+}
+
+@InputType()
+export class CommunicationLogUncheckedCreateInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:false})
+    recipient!: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    content?: any;
+    @Field(() => String, {nullable:true})
+    providerAcknowledgmentId?: string;
+    @Field(() => CommunicationStatus, {nullable:false})
+    status!: `${CommunicationStatus}`;
+    @Field(() => CommunicationMode, {nullable:false})
+    mode!: `${CommunicationMode}`;
+    @Field(() => SendMode, {nullable:false})
+    sendMode!: `${SendMode}`;
+    @Field(() => CommunicationType, {nullable:false})
+    type!: `${CommunicationType}`;
+    @Field(() => CommunicationProvider, {nullable:false})
+    provider!: `${CommunicationProvider}`;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class CommunicationLogUncheckedUpdateManyInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    recipient?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    content?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    providerAcknowledgmentId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof EnumCommunicationStatusFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationModeFieldUpdateOperationsInput, {nullable:true})
+    mode?: InstanceType<typeof EnumCommunicationModeFieldUpdateOperationsInput>;
+    @Field(() => EnumSendModeFieldUpdateOperationsInput, {nullable:true})
+    sendMode?: InstanceType<typeof EnumSendModeFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumCommunicationTypeFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationProviderFieldUpdateOperationsInput, {nullable:true})
+    provider?: InstanceType<typeof EnumCommunicationProviderFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class CommunicationLogUncheckedUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    recipient?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    content?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    providerAcknowledgmentId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof EnumCommunicationStatusFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationModeFieldUpdateOperationsInput, {nullable:true})
+    mode?: InstanceType<typeof EnumCommunicationModeFieldUpdateOperationsInput>;
+    @Field(() => EnumSendModeFieldUpdateOperationsInput, {nullable:true})
+    sendMode?: InstanceType<typeof EnumSendModeFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumCommunicationTypeFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationProviderFieldUpdateOperationsInput, {nullable:true})
+    provider?: InstanceType<typeof EnumCommunicationProviderFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class CommunicationLogUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    recipient?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    content?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    providerAcknowledgmentId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof EnumCommunicationStatusFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationModeFieldUpdateOperationsInput, {nullable:true})
+    mode?: InstanceType<typeof EnumCommunicationModeFieldUpdateOperationsInput>;
+    @Field(() => EnumSendModeFieldUpdateOperationsInput, {nullable:true})
+    sendMode?: InstanceType<typeof EnumSendModeFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumCommunicationTypeFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationProviderFieldUpdateOperationsInput, {nullable:true})
+    provider?: InstanceType<typeof EnumCommunicationProviderFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class CommunicationLogUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    recipient?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    content?: any;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    providerAcknowledgmentId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: InstanceType<typeof EnumCommunicationStatusFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationModeFieldUpdateOperationsInput, {nullable:true})
+    mode?: InstanceType<typeof EnumCommunicationModeFieldUpdateOperationsInput>;
+    @Field(() => EnumSendModeFieldUpdateOperationsInput, {nullable:true})
+    sendMode?: InstanceType<typeof EnumSendModeFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationTypeFieldUpdateOperationsInput, {nullable:true})
+    type?: InstanceType<typeof EnumCommunicationTypeFieldUpdateOperationsInput>;
+    @Field(() => EnumCommunicationProviderFieldUpdateOperationsInput, {nullable:true})
+    provider?: InstanceType<typeof EnumCommunicationProviderFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class CommunicationLogWhereUniqueInput {
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => [CommunicationLogWhereInput], {nullable:true})
+    AND?: Array<CommunicationLogWhereInput>;
+    @Field(() => [CommunicationLogWhereInput], {nullable:true})
+    OR?: Array<CommunicationLogWhereInput>;
+    @Field(() => [CommunicationLogWhereInput], {nullable:true})
+    NOT?: Array<CommunicationLogWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    recipient?: InstanceType<typeof StringFilter>;
+    @Field(() => JsonNullableFilter, {nullable:true})
+    content?: InstanceType<typeof JsonNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    providerAcknowledgmentId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => EnumCommunicationStatusFilter, {nullable:true})
+    status?: InstanceType<typeof EnumCommunicationStatusFilter>;
+    @Field(() => EnumCommunicationModeFilter, {nullable:true})
+    mode?: InstanceType<typeof EnumCommunicationModeFilter>;
+    @Field(() => EnumSendModeFilter, {nullable:true})
+    sendMode?: InstanceType<typeof EnumSendModeFilter>;
+    @Field(() => EnumCommunicationTypeFilter, {nullable:true})
+    type?: InstanceType<typeof EnumCommunicationTypeFilter>;
+    @Field(() => EnumCommunicationProviderFilter, {nullable:true})
+    provider?: InstanceType<typeof EnumCommunicationProviderFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+}
+
+@InputType()
+export class CommunicationLogWhereInput {
+    @Field(() => [CommunicationLogWhereInput], {nullable:true})
+    AND?: Array<CommunicationLogWhereInput>;
+    @Field(() => [CommunicationLogWhereInput], {nullable:true})
+    OR?: Array<CommunicationLogWhereInput>;
+    @Field(() => [CommunicationLogWhereInput], {nullable:true})
+    NOT?: Array<CommunicationLogWhereInput>;
+    @Field(() => StringFilter, {nullable:true})
+    id?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    recipient?: InstanceType<typeof StringFilter>;
+    @Field(() => JsonNullableFilter, {nullable:true})
+    content?: InstanceType<typeof JsonNullableFilter>;
+    @Field(() => StringNullableFilter, {nullable:true})
+    providerAcknowledgmentId?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => EnumCommunicationStatusFilter, {nullable:true})
+    status?: InstanceType<typeof EnumCommunicationStatusFilter>;
+    @Field(() => EnumCommunicationModeFilter, {nullable:true})
+    mode?: InstanceType<typeof EnumCommunicationModeFilter>;
+    @Field(() => EnumSendModeFilter, {nullable:true})
+    sendMode?: InstanceType<typeof EnumSendModeFilter>;
+    @Field(() => EnumCommunicationTypeFilter, {nullable:true})
+    type?: InstanceType<typeof EnumCommunicationTypeFilter>;
+    @Field(() => EnumCommunicationProviderFilter, {nullable:true})
+    provider?: InstanceType<typeof EnumCommunicationProviderFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+}
+
+@ObjectType()
+export class CommunicationLog {
+    @Field(() => ID, {nullable:false})
+    id!: string;
+    @Field(() => String, {nullable:false})
+    recipient!: string;
+    @Field(() => GraphQLJSON, {nullable:true})
+    content!: any | null;
+    @Field(() => String, {nullable:true})
+    providerAcknowledgmentId!: string | null;
+    @Field(() => CommunicationStatus, {nullable:false})
+    status!: `${CommunicationStatus}`;
+    @Field(() => CommunicationMode, {nullable:false})
+    mode!: `${CommunicationMode}`;
+    @Field(() => SendMode, {nullable:false})
+    sendMode!: `${SendMode}`;
+    @Field(() => CommunicationType, {nullable:false})
+    type!: `${CommunicationType}`;
+    @Field(() => CommunicationProvider, {nullable:false})
+    provider!: `${CommunicationProvider}`;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
+}
+
+@ArgsType()
+export class CreateManyCommunicationLogArgs {
+    @Field(() => [CommunicationLogCreateManyInput], {nullable:false})
+    @Type(() => CommunicationLogCreateManyInput)
+    data!: Array<CommunicationLogCreateManyInput>;
+}
+
+@ArgsType()
+export class CreateOneCommunicationLogArgs {
+    @Field(() => CommunicationLogCreateInput, {nullable:false})
+    @Type(() => CommunicationLogCreateInput)
+    data!: InstanceType<typeof CommunicationLogCreateInput>;
+}
+
+@ArgsType()
+export class DeleteManyCommunicationLogArgs {
+    @Field(() => CommunicationLogWhereInput, {nullable:true})
+    @Type(() => CommunicationLogWhereInput)
+    where?: InstanceType<typeof CommunicationLogWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class DeleteOneCommunicationLogArgs {
+    @Field(() => CommunicationLogWhereUniqueInput, {nullable:false})
+    @Type(() => CommunicationLogWhereUniqueInput)
+    where!: Prisma.AtLeast<CommunicationLogWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindFirstCommunicationLogOrThrowArgs {
+    @Field(() => CommunicationLogWhereInput, {nullable:true})
+    @Type(() => CommunicationLogWhereInput)
+    where?: InstanceType<typeof CommunicationLogWhereInput>;
+    @Field(() => [CommunicationLogOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<CommunicationLogOrderByWithRelationInput>;
+    @Field(() => CommunicationLogWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<CommunicationLogWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [CommunicationLogScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${CommunicationLogScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindFirstCommunicationLogArgs {
+    @Field(() => CommunicationLogWhereInput, {nullable:true})
+    @Type(() => CommunicationLogWhereInput)
+    where?: InstanceType<typeof CommunicationLogWhereInput>;
+    @Field(() => [CommunicationLogOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<CommunicationLogOrderByWithRelationInput>;
+    @Field(() => CommunicationLogWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<CommunicationLogWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [CommunicationLogScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${CommunicationLogScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindManyCommunicationLogArgs {
+    @Field(() => CommunicationLogWhereInput, {nullable:true})
+    @Type(() => CommunicationLogWhereInput)
+    where?: InstanceType<typeof CommunicationLogWhereInput>;
+    @Field(() => [CommunicationLogOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<CommunicationLogOrderByWithRelationInput>;
+    @Field(() => CommunicationLogWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<CommunicationLogWhereUniqueInput, 'id'>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [CommunicationLogScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${CommunicationLogScalarFieldEnum}`>;
+}
+
+@ArgsType()
+export class FindUniqueCommunicationLogOrThrowArgs {
+    @Field(() => CommunicationLogWhereUniqueInput, {nullable:false})
+    @Type(() => CommunicationLogWhereUniqueInput)
+    where!: Prisma.AtLeast<CommunicationLogWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class FindUniqueCommunicationLogArgs {
+    @Field(() => CommunicationLogWhereUniqueInput, {nullable:false})
+    @Type(() => CommunicationLogWhereUniqueInput)
+    where!: Prisma.AtLeast<CommunicationLogWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpdateManyCommunicationLogArgs {
+    @Field(() => CommunicationLogUpdateManyMutationInput, {nullable:false})
+    @Type(() => CommunicationLogUpdateManyMutationInput)
+    data!: InstanceType<typeof CommunicationLogUpdateManyMutationInput>;
+    @Field(() => CommunicationLogWhereInput, {nullable:true})
+    @Type(() => CommunicationLogWhereInput)
+    where?: InstanceType<typeof CommunicationLogWhereInput>;
+    @Field(() => Int, {nullable:true})
+    limit?: number;
+}
+
+@ArgsType()
+export class UpdateOneCommunicationLogArgs {
+    @Field(() => CommunicationLogUpdateInput, {nullable:false})
+    @Type(() => CommunicationLogUpdateInput)
+    data!: InstanceType<typeof CommunicationLogUpdateInput>;
+    @Field(() => CommunicationLogWhereUniqueInput, {nullable:false})
+    @Type(() => CommunicationLogWhereUniqueInput)
+    where!: Prisma.AtLeast<CommunicationLogWhereUniqueInput, 'id'>;
+}
+
+@ArgsType()
+export class UpsertOneCommunicationLogArgs {
+    @Field(() => CommunicationLogWhereUniqueInput, {nullable:false})
+    @Type(() => CommunicationLogWhereUniqueInput)
+    where!: Prisma.AtLeast<CommunicationLogWhereUniqueInput, 'id'>;
+    @Field(() => CommunicationLogCreateInput, {nullable:false})
+    @Type(() => CommunicationLogCreateInput)
+    create!: InstanceType<typeof CommunicationLogCreateInput>;
+    @Field(() => CommunicationLogUpdateInput, {nullable:false})
+    @Type(() => CommunicationLogUpdateInput)
+    update!: InstanceType<typeof CommunicationLogUpdateInput>;
 }
 
 @ArgsType()
@@ -9599,6 +10241,14 @@ export class AddressObjectEqualityInput {
 }
 
 @ArgsType()
+export class AggregateCommunicationLogRawArgs {
+    @Field(() => [GraphQLJSON], {nullable:true})
+    pipeline?: Array<any>;
+    @Field(() => GraphQLJSON, {nullable:true})
+    options?: any;
+}
+
+@ArgsType()
 export class AggregateInflucenerPlanRawArgs {
     @Field(() => [GraphQLJSON], {nullable:true})
     pipeline?: Array<any>;
@@ -9798,6 +10448,150 @@ export class DateTimeWithAggregatesFilter {
     _min?: InstanceType<typeof NestedDateTimeFilter>;
     @Field(() => NestedDateTimeFilter, {nullable:true})
     _max?: InstanceType<typeof NestedDateTimeFilter>;
+}
+
+@InputType()
+export class EnumCommunicationModeFieldUpdateOperationsInput {
+    @Field(() => CommunicationMode, {nullable:true})
+    set?: `${CommunicationMode}`;
+}
+
+@InputType()
+export class EnumCommunicationModeFilter {
+    @Field(() => CommunicationMode, {nullable:true})
+    equals?: `${CommunicationMode}`;
+    @Field(() => [CommunicationMode], {nullable:true})
+    in?: Array<`${CommunicationMode}`>;
+    @Field(() => [CommunicationMode], {nullable:true})
+    notIn?: Array<`${CommunicationMode}`>;
+    @Field(() => NestedEnumCommunicationModeFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationModeFilter>;
+}
+
+@InputType()
+export class EnumCommunicationModeWithAggregatesFilter {
+    @Field(() => CommunicationMode, {nullable:true})
+    equals?: `${CommunicationMode}`;
+    @Field(() => [CommunicationMode], {nullable:true})
+    in?: Array<`${CommunicationMode}`>;
+    @Field(() => [CommunicationMode], {nullable:true})
+    notIn?: Array<`${CommunicationMode}`>;
+    @Field(() => NestedEnumCommunicationModeWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationModeWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumCommunicationModeFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumCommunicationModeFilter>;
+    @Field(() => NestedEnumCommunicationModeFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumCommunicationModeFilter>;
+}
+
+@InputType()
+export class EnumCommunicationProviderFieldUpdateOperationsInput {
+    @Field(() => CommunicationProvider, {nullable:true})
+    set?: `${CommunicationProvider}`;
+}
+
+@InputType()
+export class EnumCommunicationProviderFilter {
+    @Field(() => CommunicationProvider, {nullable:true})
+    equals?: `${CommunicationProvider}`;
+    @Field(() => [CommunicationProvider], {nullable:true})
+    in?: Array<`${CommunicationProvider}`>;
+    @Field(() => [CommunicationProvider], {nullable:true})
+    notIn?: Array<`${CommunicationProvider}`>;
+    @Field(() => NestedEnumCommunicationProviderFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationProviderFilter>;
+}
+
+@InputType()
+export class EnumCommunicationProviderWithAggregatesFilter {
+    @Field(() => CommunicationProvider, {nullable:true})
+    equals?: `${CommunicationProvider}`;
+    @Field(() => [CommunicationProvider], {nullable:true})
+    in?: Array<`${CommunicationProvider}`>;
+    @Field(() => [CommunicationProvider], {nullable:true})
+    notIn?: Array<`${CommunicationProvider}`>;
+    @Field(() => NestedEnumCommunicationProviderWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationProviderWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumCommunicationProviderFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumCommunicationProviderFilter>;
+    @Field(() => NestedEnumCommunicationProviderFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumCommunicationProviderFilter>;
+}
+
+@InputType()
+export class EnumCommunicationStatusFieldUpdateOperationsInput {
+    @Field(() => CommunicationStatus, {nullable:true})
+    set?: `${CommunicationStatus}`;
+}
+
+@InputType()
+export class EnumCommunicationStatusFilter {
+    @Field(() => CommunicationStatus, {nullable:true})
+    equals?: `${CommunicationStatus}`;
+    @Field(() => [CommunicationStatus], {nullable:true})
+    in?: Array<`${CommunicationStatus}`>;
+    @Field(() => [CommunicationStatus], {nullable:true})
+    notIn?: Array<`${CommunicationStatus}`>;
+    @Field(() => NestedEnumCommunicationStatusFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationStatusFilter>;
+}
+
+@InputType()
+export class EnumCommunicationStatusWithAggregatesFilter {
+    @Field(() => CommunicationStatus, {nullable:true})
+    equals?: `${CommunicationStatus}`;
+    @Field(() => [CommunicationStatus], {nullable:true})
+    in?: Array<`${CommunicationStatus}`>;
+    @Field(() => [CommunicationStatus], {nullable:true})
+    notIn?: Array<`${CommunicationStatus}`>;
+    @Field(() => NestedEnumCommunicationStatusWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationStatusWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumCommunicationStatusFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumCommunicationStatusFilter>;
+    @Field(() => NestedEnumCommunicationStatusFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumCommunicationStatusFilter>;
+}
+
+@InputType()
+export class EnumCommunicationTypeFieldUpdateOperationsInput {
+    @Field(() => CommunicationType, {nullable:true})
+    set?: `${CommunicationType}`;
+}
+
+@InputType()
+export class EnumCommunicationTypeFilter {
+    @Field(() => CommunicationType, {nullable:true})
+    equals?: `${CommunicationType}`;
+    @Field(() => [CommunicationType], {nullable:true})
+    in?: Array<`${CommunicationType}`>;
+    @Field(() => [CommunicationType], {nullable:true})
+    notIn?: Array<`${CommunicationType}`>;
+    @Field(() => NestedEnumCommunicationTypeFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationTypeFilter>;
+}
+
+@InputType()
+export class EnumCommunicationTypeWithAggregatesFilter {
+    @Field(() => CommunicationType, {nullable:true})
+    equals?: `${CommunicationType}`;
+    @Field(() => [CommunicationType], {nullable:true})
+    in?: Array<`${CommunicationType}`>;
+    @Field(() => [CommunicationType], {nullable:true})
+    notIn?: Array<`${CommunicationType}`>;
+    @Field(() => NestedEnumCommunicationTypeWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationTypeWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumCommunicationTypeFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumCommunicationTypeFilter>;
+    @Field(() => NestedEnumCommunicationTypeFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumCommunicationTypeFilter>;
 }
 
 @InputType()
@@ -10125,6 +10919,42 @@ export class EnumRoleWithAggregatesFilter {
 }
 
 @InputType()
+export class EnumSendModeFieldUpdateOperationsInput {
+    @Field(() => SendMode, {nullable:true})
+    set?: `${SendMode}`;
+}
+
+@InputType()
+export class EnumSendModeFilter {
+    @Field(() => SendMode, {nullable:true})
+    equals?: `${SendMode}`;
+    @Field(() => [SendMode], {nullable:true})
+    in?: Array<`${SendMode}`>;
+    @Field(() => [SendMode], {nullable:true})
+    notIn?: Array<`${SendMode}`>;
+    @Field(() => NestedEnumSendModeFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumSendModeFilter>;
+}
+
+@InputType()
+export class EnumSendModeWithAggregatesFilter {
+    @Field(() => SendMode, {nullable:true})
+    equals?: `${SendMode}`;
+    @Field(() => [SendMode], {nullable:true})
+    in?: Array<`${SendMode}`>;
+    @Field(() => [SendMode], {nullable:true})
+    notIn?: Array<`${SendMode}`>;
+    @Field(() => NestedEnumSendModeWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumSendModeWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumSendModeFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumSendModeFilter>;
+    @Field(() => NestedEnumSendModeFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumSendModeFilter>;
+}
+
+@InputType()
 export class EnumSocialPlatformFieldUpdateOperationsInput {
     @Field(() => SocialPlatform, {nullable:true})
     set?: `${SocialPlatform}`;
@@ -10248,6 +11078,14 @@ export class EnumTaxBehaviourWithAggregatesFilter {
     _min?: InstanceType<typeof NestedEnumTaxBehaviourFilter>;
     @Field(() => NestedEnumTaxBehaviourFilter, {nullable:true})
     _max?: InstanceType<typeof NestedEnumTaxBehaviourFilter>;
+}
+
+@ArgsType()
+export class FindCommunicationLogRawArgs {
+    @Field(() => GraphQLJSON, {nullable:true})
+    filter?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    options?: any;
 }
 
 @ArgsType()
@@ -10441,6 +11279,32 @@ export class IntWithAggregatesFilter {
 }
 
 @InputType()
+export class JsonNullableFilter {
+    @Field(() => GraphQLJSON, {nullable:true})
+    equals?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    not?: any;
+    @Field(() => Boolean, {nullable:true})
+    isSet?: boolean;
+}
+
+@InputType()
+export class JsonNullableWithAggregatesFilter {
+    @Field(() => GraphQLJSON, {nullable:true})
+    equals?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    not?: any;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntNullableFilter>;
+    @Field(() => NestedJsonNullableFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedJsonNullableFilter>;
+    @Field(() => NestedJsonNullableFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedJsonNullableFilter>;
+    @Field(() => Boolean, {nullable:true})
+    isSet?: boolean;
+}
+
+@InputType()
 export class NestedBoolFilter {
     @Field(() => Boolean, {nullable:true})
     equals?: boolean;
@@ -10556,6 +11420,126 @@ export class NestedDateTimeWithAggregatesFilter {
     _min?: InstanceType<typeof NestedDateTimeFilter>;
     @Field(() => NestedDateTimeFilter, {nullable:true})
     _max?: InstanceType<typeof NestedDateTimeFilter>;
+}
+
+@InputType()
+export class NestedEnumCommunicationModeFilter {
+    @Field(() => CommunicationMode, {nullable:true})
+    equals?: `${CommunicationMode}`;
+    @Field(() => [CommunicationMode], {nullable:true})
+    in?: Array<`${CommunicationMode}`>;
+    @Field(() => [CommunicationMode], {nullable:true})
+    notIn?: Array<`${CommunicationMode}`>;
+    @Field(() => NestedEnumCommunicationModeFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationModeFilter>;
+}
+
+@InputType()
+export class NestedEnumCommunicationModeWithAggregatesFilter {
+    @Field(() => CommunicationMode, {nullable:true})
+    equals?: `${CommunicationMode}`;
+    @Field(() => [CommunicationMode], {nullable:true})
+    in?: Array<`${CommunicationMode}`>;
+    @Field(() => [CommunicationMode], {nullable:true})
+    notIn?: Array<`${CommunicationMode}`>;
+    @Field(() => NestedEnumCommunicationModeWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationModeWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumCommunicationModeFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumCommunicationModeFilter>;
+    @Field(() => NestedEnumCommunicationModeFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumCommunicationModeFilter>;
+}
+
+@InputType()
+export class NestedEnumCommunicationProviderFilter {
+    @Field(() => CommunicationProvider, {nullable:true})
+    equals?: `${CommunicationProvider}`;
+    @Field(() => [CommunicationProvider], {nullable:true})
+    in?: Array<`${CommunicationProvider}`>;
+    @Field(() => [CommunicationProvider], {nullable:true})
+    notIn?: Array<`${CommunicationProvider}`>;
+    @Field(() => NestedEnumCommunicationProviderFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationProviderFilter>;
+}
+
+@InputType()
+export class NestedEnumCommunicationProviderWithAggregatesFilter {
+    @Field(() => CommunicationProvider, {nullable:true})
+    equals?: `${CommunicationProvider}`;
+    @Field(() => [CommunicationProvider], {nullable:true})
+    in?: Array<`${CommunicationProvider}`>;
+    @Field(() => [CommunicationProvider], {nullable:true})
+    notIn?: Array<`${CommunicationProvider}`>;
+    @Field(() => NestedEnumCommunicationProviderWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationProviderWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumCommunicationProviderFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumCommunicationProviderFilter>;
+    @Field(() => NestedEnumCommunicationProviderFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumCommunicationProviderFilter>;
+}
+
+@InputType()
+export class NestedEnumCommunicationStatusFilter {
+    @Field(() => CommunicationStatus, {nullable:true})
+    equals?: `${CommunicationStatus}`;
+    @Field(() => [CommunicationStatus], {nullable:true})
+    in?: Array<`${CommunicationStatus}`>;
+    @Field(() => [CommunicationStatus], {nullable:true})
+    notIn?: Array<`${CommunicationStatus}`>;
+    @Field(() => NestedEnumCommunicationStatusFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationStatusFilter>;
+}
+
+@InputType()
+export class NestedEnumCommunicationStatusWithAggregatesFilter {
+    @Field(() => CommunicationStatus, {nullable:true})
+    equals?: `${CommunicationStatus}`;
+    @Field(() => [CommunicationStatus], {nullable:true})
+    in?: Array<`${CommunicationStatus}`>;
+    @Field(() => [CommunicationStatus], {nullable:true})
+    notIn?: Array<`${CommunicationStatus}`>;
+    @Field(() => NestedEnumCommunicationStatusWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationStatusWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumCommunicationStatusFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumCommunicationStatusFilter>;
+    @Field(() => NestedEnumCommunicationStatusFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumCommunicationStatusFilter>;
+}
+
+@InputType()
+export class NestedEnumCommunicationTypeFilter {
+    @Field(() => CommunicationType, {nullable:true})
+    equals?: `${CommunicationType}`;
+    @Field(() => [CommunicationType], {nullable:true})
+    in?: Array<`${CommunicationType}`>;
+    @Field(() => [CommunicationType], {nullable:true})
+    notIn?: Array<`${CommunicationType}`>;
+    @Field(() => NestedEnumCommunicationTypeFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationTypeFilter>;
+}
+
+@InputType()
+export class NestedEnumCommunicationTypeWithAggregatesFilter {
+    @Field(() => CommunicationType, {nullable:true})
+    equals?: `${CommunicationType}`;
+    @Field(() => [CommunicationType], {nullable:true})
+    in?: Array<`${CommunicationType}`>;
+    @Field(() => [CommunicationType], {nullable:true})
+    notIn?: Array<`${CommunicationType}`>;
+    @Field(() => NestedEnumCommunicationTypeWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumCommunicationTypeWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumCommunicationTypeFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumCommunicationTypeFilter>;
+    @Field(() => NestedEnumCommunicationTypeFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumCommunicationTypeFilter>;
 }
 
 @InputType()
@@ -10829,6 +11813,36 @@ export class NestedEnumRoleWithAggregatesFilter {
 }
 
 @InputType()
+export class NestedEnumSendModeFilter {
+    @Field(() => SendMode, {nullable:true})
+    equals?: `${SendMode}`;
+    @Field(() => [SendMode], {nullable:true})
+    in?: Array<`${SendMode}`>;
+    @Field(() => [SendMode], {nullable:true})
+    notIn?: Array<`${SendMode}`>;
+    @Field(() => NestedEnumSendModeFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumSendModeFilter>;
+}
+
+@InputType()
+export class NestedEnumSendModeWithAggregatesFilter {
+    @Field(() => SendMode, {nullable:true})
+    equals?: `${SendMode}`;
+    @Field(() => [SendMode], {nullable:true})
+    in?: Array<`${SendMode}`>;
+    @Field(() => [SendMode], {nullable:true})
+    notIn?: Array<`${SendMode}`>;
+    @Field(() => NestedEnumSendModeWithAggregatesFilter, {nullable:true})
+    not?: InstanceType<typeof NestedEnumSendModeWithAggregatesFilter>;
+    @Field(() => NestedIntFilter, {nullable:true})
+    _count?: InstanceType<typeof NestedIntFilter>;
+    @Field(() => NestedEnumSendModeFilter, {nullable:true})
+    _min?: InstanceType<typeof NestedEnumSendModeFilter>;
+    @Field(() => NestedEnumSendModeFilter, {nullable:true})
+    _max?: InstanceType<typeof NestedEnumSendModeFilter>;
+}
+
+@InputType()
 export class NestedEnumSocialPlatformFilter {
     @Field(() => SocialPlatform, {nullable:true})
     equals?: `${SocialPlatform}`;
@@ -11074,6 +12088,16 @@ export class NestedIntWithAggregatesFilter {
     _min?: InstanceType<typeof NestedIntFilter>;
     @Field(() => NestedIntFilter, {nullable:true})
     _max?: InstanceType<typeof NestedIntFilter>;
+}
+
+@InputType()
+export class NestedJsonNullableFilter {
+    @Field(() => GraphQLJSON, {nullable:true})
+    equals?: any;
+    @Field(() => GraphQLJSON, {nullable:true})
+    not?: any;
+    @Field(() => Boolean, {nullable:true})
+    isSet?: boolean;
 }
 
 @InputType()

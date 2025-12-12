@@ -9,6 +9,7 @@ import {
 } from './auth.dto';
 import * as bcrypt from 'bcrypt';
 import { Role } from 'src/---generated---';
+import { ResendService } from 'src/resend/resend.service';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
     private readonly db: DbService,
     private readonly jwtService: JwtService,
     private readonly sessionService: SessionService,
+    private readonly resendService: ResendService,
   ) {}
 
   async influencerLogin(input: InfluencerLoginInput): Promise<AuthResponse> {
@@ -71,6 +73,11 @@ export class AuthService {
       influencer.id,
       Role.INFLUENCER,
     );
+
+    await this.resendService.sendRegistrationEmail({
+      to: influencer.email,
+      name: influencer.name ?? influencer.username,
+    });
 
     return { isNew: true, token };
   }

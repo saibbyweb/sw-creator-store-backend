@@ -335,3 +335,50 @@ model Media {
 
   @@index([influencerId])
 }
+
+enum CommunicationType {
+  ACCOUNT_CREATION
+  ACCOUNT_UPDATE
+  ADVERTISEMENT
+  SUBSCRIPTION_CREATION
+  SUBSCRIPTION_CANCELLATION
+}
+
+enum CommunicationMode {
+  EMAIL
+  SMS
+  WHATSAPP
+}
+
+enum SendMode {
+  MANUAL
+  AUTOMATIC
+}
+
+enum CommunicationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum CommunicationProvider {
+  TWILIO
+  SENDGRID
+  RESEND
+  MAILGUN
+}
+
+model CommunicationLog {
+  id                       String                @id @default(auto()) @map("_id") @db.ObjectId
+  recipient                String
+  content                  Json?
+  providerAcknowledgmentId String?
+  status                   CommunicationStatus
+  mode                     CommunicationMode
+  sendMode                 SendMode
+  type                     CommunicationType
+  provider                 CommunicationProvider
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -16,6 +16,8 @@ import { S3Module } from './s3/s3.module';
 import { MediaModule } from './media/media.module';
 import { PaymentMethodModule } from './payment-method/payment-method.module';
 import { StripeModule } from './stripe/stripe.module';
+import { CommunicationLogModule } from './communication-log/communication-log.module';
+import { ResendModule } from './resend/resend.module';
 
 @Module({
   imports: [
@@ -37,6 +39,8 @@ import { StripeModule } from './stripe/stripe.module';
     MediaModule,
     PaymentMethodModule,
     StripeModule,
+    CommunicationLogModule,
+    ResendModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
